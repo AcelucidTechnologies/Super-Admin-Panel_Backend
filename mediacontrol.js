@@ -1,24 +1,24 @@
 const AWS = require('aws-sdk')
 const fs = require('fs')
-// exports.imageUpload= async (filedata)=>{
-//     const s3 = new AWS.S3({
-//         accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
-//         secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
-//       })
-//     const imagePath = filedata.path
-//     const blob = fs.readFileSync(imagePath)
-//     const uploadedImage = await s3.upload({
-//         Bucket: process.env.AWS_S3_BUCKET_NAME,
-//         Key:filedata.originalname,
-//         ContentType: 'image/jpeg',
-//         ACL:'public-read',
-//         Body: blob,
-//       }).promise().catch(err=>{
-//         console.log(err)
-//       })
-//       console.log(uploadedImage.Location)
-//       return uploadedImage.Location
-// }
+exports.imageUpload= async (filedata)=>{
+    const s3 = new AWS.S3({
+        accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+      })
+    const imagePath = filedata.path
+    const blob = fs.readFileSync(imagePath)
+    const uploadedImage = await s3.upload({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key:filedata.originalname,
+        ContentType: 'image/jpeg',
+        ACL:'public-read',
+        Body: blob,
+      }).promise().catch(err=>{
+        console.log(err)
+      })
+      console.log(uploadedImage.Location)
+      return uploadedImage.Location
+}
 
 exports.imageDelete= async (filedata)=>{
     const s3 = new AWS.S3({

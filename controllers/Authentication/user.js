@@ -115,7 +115,7 @@ exports.signup = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        errors: [{ error: "Something went wrong" }],
+        errors: [{ error: "Something went wrong"}],
       });
       console.log(err);
     });
