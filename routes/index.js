@@ -88,6 +88,7 @@ const {
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const { uploadImage,up } = require("../controllers/bannerSpecial");
+const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct}= require("../controllers/featureProduct")
 
 // const storage = multer.diskStorage(
 //   {
@@ -430,9 +431,12 @@ router.put(
   uploadImage,
   updateBannerSpecial
 );
-router.delete(
-  "/deleteBannerSpecial",
-  rolehandler.grantAccess("deleteOwn", "profile"),
-  deleteBannerSpecial
-);
+router.delete("/deleteBannerSpecial",rolehandler.grantAccess("deleteOwn", "profile"),deleteBannerSpecial);
+
+//     Feature Product Api
+
+router.post("/createFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),featureImage,createFeatureProduct);
+router.get("/getFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),getFeatureProduct);
+router.put("/updateFeatureProduct",rolehandler.grantAccess("updateOwn", "profile"),featureImage,updateFeatureProduct);
+router.delete("/deleteFeatureProduct",rolehandler.grantAccess("deleteOwn", "profile"),deleteFeatureProduct);
 module.exports = router;

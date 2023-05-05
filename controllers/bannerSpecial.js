@@ -1,14 +1,8 @@
 const BannerSpecial = require("../models/bannerSpecial");
-const image = require("../mediacontrol");
 const multer = require("multer");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const bucket = require("../mediacontrol");
-// let abc = new bannerSpecial({
-//   name:name
-// })
-// abc.save()
-//image upload
 
   const s3 = new S3Client({
     credentials: {
@@ -36,6 +30,8 @@ const bucket = require("../mediacontrol");
     });
 exports.uploadImage = uploadData.single("image")
 
+// For Get Api 
+
 exports.getBannerSpecial = (req, res, next) => {
   let { username } = req.query;
   console.log("usename", username);
@@ -43,11 +39,13 @@ exports.getBannerSpecial = (req, res, next) => {
   BannerSpecial
     .find({ username: username })
     .then((response) => {
-      if (response) {
-        console.log("data");
+      if (response[0]) {
         res.status(200).send(response);
       } else {
-        res.status(404).JSON(["not found data"]);
+        
+        res.status(404).json({
+          result: "data not found"
+        });
       }
     })
     .catch((err) => {
@@ -62,6 +60,9 @@ exports.getBannerSpecial = (req, res, next) => {
     });
 };
 
+
+// For Create Api 
+
 exports.createBannerSpecial = (req, res, next) => {
   let data = new BannerSpecial({
     username: req.body.username,
@@ -70,7 +71,7 @@ exports.createBannerSpecial = (req, res, next) => {
     bannerDescription: req.body.bannerDescription,
     image: req.file.originalname,
   });
-  bannerSpecial
+  BannerSpecial
     .findOne({ bannerName: data.bannerName })
     .then((response) => {
       if (!response) {
@@ -98,6 +99,8 @@ exports.createBannerSpecial = (req, res, next) => {
     });
 };
 
+// For Update Api 
+
 exports.updateBannerSpecial = (req, res, next) => {
   let Id;
   req.query.id ? (Id = req.query.id) : next();
@@ -116,7 +119,6 @@ exports.updateBannerSpecial = (req, res, next) => {
       Data.image = req.file.originalname;
       resolve(true);
     } else {
-      console.log("116");
       resolve(true);
     }
   });
@@ -139,6 +141,8 @@ exports.updateBannerSpecial = (req, res, next) => {
   });
 };
 
+// For Delete Api 
+
 exports.deleteBannerSpecial = (req, res, next) => {
   let Id;
   req.query.id ? (Id = req.query.id) : next();
@@ -152,7 +156,6 @@ exports.deleteBannerSpecial = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(163);
       res.status(500).json({
         errors: [{ error: "Something went wrong" }],
       });
