@@ -60,7 +60,6 @@ exports.getBannerSpecial = (req, res, next) => {
     });
 };
 
-
 // For Create Api 
 
 exports.createBannerSpecial = (req, res, next) => {

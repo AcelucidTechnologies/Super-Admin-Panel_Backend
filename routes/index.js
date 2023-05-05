@@ -89,7 +89,7 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const { uploadImage,up } = require("../controllers/bannerSpecial");
 const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct}= require("../controllers/featureProduct")
-
+const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider}= require("../controllers/slider")
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -439,4 +439,12 @@ router.post("/createFeatureProduct",rolehandler.grantAccess("readOwn", "profile"
 router.get("/getFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),getFeatureProduct);
 router.put("/updateFeatureProduct",rolehandler.grantAccess("updateOwn", "profile"),featureImage,updateFeatureProduct);
 router.delete("/deleteFeatureProduct",rolehandler.grantAccess("deleteOwn", "profile"),deleteFeatureProduct);
+
+//  Slider product api
+
+router.post("/createSlider",rolehandler.grantAccess("readOwn", "profile"),sliderImage,createSlider);
+router.get("/getSlider",rolehandler.grantAccess("readOwn", "profile"),getSlider);
+router.put("/updateSlider",rolehandler.grantAccess("updateOwn", "profile"),sliderImage,updateSlider);
+router.delete("/deleteSlider",rolehandler.grantAccess("deleteOwn", "profile"),deleteSlider);
+
 module.exports = router;

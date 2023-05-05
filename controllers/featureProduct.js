@@ -50,10 +50,11 @@ exports.createFeatureProduct = (req, res, next) => {
       if (!response) {
         console.log("46");
         Data.save().then((result) => {
+        
           res.json(result);
         });
       } else {
-        res.status(404).json({
+        res.status(208).json({
           errors: [
             {
               error: "Model name already exits",
@@ -77,17 +78,15 @@ exports.createFeatureProduct = (req, res, next) => {
 
 exports.getFeatureProduct = (req, res, next) => {
   let { username } = req.query;
-  console.log("usename", username);
+  console.log("username", username);
 
   FeatureProduct.find({ username: username })
     .then((response) => {
       if (response[0]) {
         console.log(response);
-        console.log("83");
         res.status(200).json(response);
       } else {
-        console.log("87");
-        res.status(400).json({
+        res.status(404).json({
           result: "data not found",
         });
       }
@@ -107,6 +106,7 @@ exports.updateFeatureProduct = (req, res, next) => {
     productPrice: req.body.productPrice,
     productModel: req.body.productModel,
     productQuantity: req.body.productQuantity,
+    image: req.file.originalname
   };
   let Data = JSON.stringify(data);
   console.log(Data);
@@ -124,6 +124,7 @@ exports.updateFeatureProduct = (req, res, next) => {
       FeatureProduct.findByIdAndUpdate(Id, data, { new: true })
         .then((response2) => {
           if (response2) {
+            console.log(response2)
             res.status(200).json(response2);
           }
         })
