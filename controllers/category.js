@@ -74,7 +74,6 @@ exports.deleteCategory = (req, res, next) => {
     .then((response) => {
       if (response) {
         bucket.imageDelete(response.image).then((returned)=>{
-         
          console.log(returned)
          if (returned) res.status(200).send(response);
         })
