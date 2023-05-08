@@ -4,6 +4,7 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const bucket = require("../mediacontrol");
 const { response } = require("express");
+const featureProduct = require("../models/featureProduct");
 
 const s3 = new S3Client({
   credentials: {
@@ -40,6 +41,7 @@ exports.createFeatureProduct = (req, res, next) => {
     productQuantity: req.body.productQuantity,
     productModel: req.body.productModel,
     image: req.file.originalname,
+    isSpecialProduct: req.body.isSpecialProduct
   });
   console.log("44", Data);
   FeatureProduct.findOne({
@@ -50,7 +52,6 @@ exports.createFeatureProduct = (req, res, next) => {
       if (!response) {
         console.log("46");
         Data.save().then((result) => {
-        
           res.json(result);
         });
       } else {
@@ -106,7 +107,8 @@ exports.updateFeatureProduct = (req, res, next) => {
     productPrice: req.body.productPrice,
     productModel: req.body.productModel,
     productQuantity: req.body.productQuantity,
-    image: req.file.originalname
+    image: req.file.originalname,
+    isSpecialProduct: req.body.isSpecialProduct
   };
   let Data = JSON.stringify(data);
   console.log(Data);
@@ -124,7 +126,7 @@ exports.updateFeatureProduct = (req, res, next) => {
       FeatureProduct.findByIdAndUpdate(Id, data, { new: true })
         .then((response2) => {
           if (response2) {
-            console.log(response2)
+            console.log(response2);
             res.status(200).json(response2);
           }
         })
@@ -137,20 +139,44 @@ exports.updateFeatureProduct = (req, res, next) => {
   });
 };
 
-exports.deleteFeatureProduct= (req,res,next)=>{
-let Id;
-req.query.id ?(Id = req.query.id): next()
-FeatureProduct.findByIdAndDelete(Id).then((response)=>{
-    if(response){
-  bucket.imageDelete(response.image).then((returned)=>{
-    if(returned){
-        res.status(200).json(response);
-    }
-  })
-    }
-}).catch((err)=>{
-    res.status(500).json({
-        error: "Something went wrong"
+exports.deleteFeatureProduct = (req, res, next) => {
+  let Id;
+  req.query.id ? (Id = req.query.id) : next();
+  FeatureProduct.findByIdAndDelete(Id)
+    .then((response) => {
+      if (response) {
+        bucket.imageDelete(response.image).then((returned) => {
+          if (returned) {
+            res.status(200).json(response);
+          }
+        });
+      }
     })
-})
-}
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+      });
+    });
+};
+
+exports.getSpeciaProduct = (req, res, next) => {
+  featureProduct
+    .find({ isSpecialProduct: true })
+    .then((response) => {
+      if (response) {
+        res.status(200).json({
+          response,
+        });
+      } else {
+        console.log("168");
+        res.status(404).json({
+          error: "Not a special product",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: `Something went wrong ${err}`,
+      });
+    });
+};

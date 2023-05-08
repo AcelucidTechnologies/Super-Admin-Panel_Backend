@@ -88,8 +88,9 @@ const {
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const { uploadImage,up } = require("../controllers/bannerSpecial");
-const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct}= require("../controllers/featureProduct")
-const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider}= require("../controllers/slider")
+const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct, getSpeciaProduct}= require("../controllers/featureProduct")
+const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider}= require("../controllers/slider");
+const { createPageSetUp, updatePageSetUp, getpageSetUp } = require("../controllers/pageSetUP");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -440,6 +441,10 @@ router.get("/getFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),ge
 router.put("/updateFeatureProduct",rolehandler.grantAccess("updateOwn", "profile"),featureImage,updateFeatureProduct);
 router.delete("/deleteFeatureProduct",rolehandler.grantAccess("deleteOwn", "profile"),deleteFeatureProduct);
 
+//   for Special product Api
+
+router.get("/getSpecialProduct",rolehandler.grantAccess("readOwn", "profile"),getSpeciaProduct)
+
 //  Slider product api
 
 router.post("/createSlider",rolehandler.grantAccess("readOwn", "profile"),sliderImage,createSlider);
@@ -447,4 +452,9 @@ router.get("/getSlider",rolehandler.grantAccess("readOwn", "profile"),getSlider)
 router.put("/updateSlider",rolehandler.grantAccess("updateOwn", "profile"),sliderImage,updateSlider);
 router.delete("/deleteSlider",rolehandler.grantAccess("deleteOwn", "profile"),deleteSlider);
 
+//     Page SetUp Apis
+
+router.get("/getPageSetUp",rolehandler.grantAccess("readOwn", "profile"),getpageSetUp);
+router.post("/createPageSetUp",rolehandler.grantAccess("readOwn", "profile"),createPageSetUp);
+router.put("/updatePageSetUp",rolehandler.grantAccess("updateOwn", "profile"),updatePageSetUp);
 module.exports = router;
