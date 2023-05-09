@@ -84,6 +84,7 @@ const {
   getBannerSpecial,
   updateBannerSpecial,
   deleteBannerSpecial,
+  getAllBannerData,
 } = require("../controllers/bannerSpecial");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
@@ -458,3 +459,7 @@ router.get("/getPageSetUp",rolehandler.grantAccess("readOwn", "profile"),getpage
 router.post("/createPageSetUp",rolehandler.grantAccess("readOwn", "profile"),createPageSetUp);
 router.put("/updatePageSetUp",rolehandler.grantAccess("updateOwn", "profile"),updatePageSetUp);
 module.exports = router;
+
+// Apis of banner for SuperAdmin
+router.get("/getAllBannerData",rolehandler.grantAccess("readOwn", "profile"),getAllBannerData);
+

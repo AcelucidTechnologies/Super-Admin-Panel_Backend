@@ -160,3 +160,20 @@ exports.deleteBannerSpecial = (req, res, next) => {
       });
     });
 };
+
+exports.getAllBannerData=(req,res,next)=>{
+BannerSpecial.find().then((response)=>{
+  if(response){
+    res.status(200).json(response)
+  }
+  else{
+    res.status(404).json({
+      error: "Data not Found"
+    })
+  }
+}).catch((err)=>{
+  res.status(500).json({
+  error: "Something went wrong"
+  })
+})
+}

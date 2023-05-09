@@ -88,8 +88,7 @@ exports.signup = (req, res, next) => {
           }
         );
         users.token = token;
-        // save user token
-
+        // save user token 
         bcrypt.genSalt(10, function (err, salt) {
           bcrypt.hash(password, salt, function (err, hash) {
             if (err) throw err;
@@ -260,7 +259,7 @@ exports.login = (req, res, next) => {
               { userId: user._id },
               process.env.TOKEN,
               {
-                expiresIn: "1d",
+                expiresIn: "5d",
               }
             );
             user.token = token;
@@ -323,7 +322,7 @@ exports.adminLogin = (req, res, next) => {
                   { userId: user._id },
                   process.env.TOKEN,
                   {
-                    expiresIn: "1d",
+                    expiresIn: "5d",
                   }
                 );
                 user.token = token;
