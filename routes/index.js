@@ -92,7 +92,7 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const { uploadImage,up } = require("../controllers/bannerSpecial");
 const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct, getSpeciaProduct, getFeatureProductById}= require("../controllers/featureProduct")
-const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider}= require("../controllers/slider");
+const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider, getSliderById}= require("../controllers/slider");
 const { createPageSetUp, updatePageSetUp, getpageSetUp } = require("../controllers/pageSetUP");
 // const storage = multer.diskStorage(
 //   {
@@ -453,7 +453,7 @@ router.post("/createSlider",rolehandler.grantAccess("readOwn", "profile"),slider
 router.get("/getSlider",rolehandler.grantAccess("readOwn", "profile"),getSlider);
 router.put("/updateSlider",rolehandler.grantAccess("updateOwn", "profile"),sliderImage,updateSlider);
 router.delete("/deleteSlider",rolehandler.grantAccess("deleteOwn", "profile"),deleteSlider);
-
+router.get("/getSliderById",rolehandler.grantAccess("readOwn", "profile"),getSliderById);
 //     Page SetUp Apis
 
 router.get("/getPageSetUp",rolehandler.grantAccess("readOwn", "profile"),getpageSetUp);
