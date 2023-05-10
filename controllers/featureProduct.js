@@ -180,3 +180,38 @@ exports.getSpeciaProduct = (req, res, next) => {
       });
     });
 };
+
+exports.getAllFeatureProduct=()=>{
+  FeatureProduct.find().then((response)=>{
+    if(response){
+      res.status(200).json(response)
+    }
+    else{
+      res.status(404).json({
+        error: "Data not Found"
+      })
+    }
+  }).catch((err)=>{
+    res.status(500).json({
+      error: "Something went wrong"
+    })
+  })
+}
+
+exports.getFeatureProductById = (req, res, next) => {
+  let  Id
+  if (req.query.id) { Id = req.query.id }
+  else { return next() }
+  FeatureProduct.findById(Id)
+    .then((response) => {
+      if (response) {
+        res.status(200).send(response);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ error: "Something went wrong while fetching a Feature Product detail" }],
+      });
+      console.log(err);
+    });
+};
