@@ -63,6 +63,7 @@ exports.getBannerSpecial = (req, res, next) => {
 // For Create Api 
 
 exports.createBannerSpecial = (req, res, next) => {
+  
   let data = new BannerSpecial({
     username: req.body.username,
     bannerName: req.body.bannerName,
@@ -177,3 +178,21 @@ BannerSpecial.find().then((response)=>{
   })
 })
 }
+
+exports.getBannerDataById = (req, res, next) => {
+  let  Id
+  if (req.query.id) { Id = req.query.id }
+  else { return next() }
+  BannerSpecial.findById(Id)
+    .then((response) => {
+      if (response) {
+        res.status(200).send(response);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ error: "Something went wrong while fetching a Banner Special detail" }],
+      });
+      console.log(err);
+    });
+};

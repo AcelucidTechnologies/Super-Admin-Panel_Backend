@@ -67,7 +67,6 @@ exports.updatePageSetUp = (req, res, next) => {
     });
 };
 
-
 exports.getAllPageSetUp=()=>{
     pageSetUp.find().then((response)=>{
       if(response){

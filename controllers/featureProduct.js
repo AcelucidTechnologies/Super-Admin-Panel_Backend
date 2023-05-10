@@ -197,3 +197,21 @@ exports.getAllFeatureProduct=()=>{
     })
   })
 }
+
+exports.getFeatureProductById = (req, res, next) => {
+  let  Id
+  if (req.query.id) { Id = req.query.id }
+  else { return next() }
+  FeatureProduct.findById(Id)
+    .then((response) => {
+      if (response) {
+        res.status(200).send(response);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ error: "Something went wrong while fetching a Feature Product detail" }],
+      });
+      console.log(err);
+    });
+};

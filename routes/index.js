@@ -71,6 +71,7 @@ const {
   createCoupon,
   updateCouponDetail,
   deleteCoupon,
+  getCouponDataById,
 } = require("../controllers/coupon");
 const {
   getAllUserPermission,
@@ -85,11 +86,12 @@ const {
   updateBannerSpecial,
   deleteBannerSpecial,
   getAllBannerData,
+  getBannerDataById,
 } = require("../controllers/bannerSpecial");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const { uploadImage,up } = require("../controllers/bannerSpecial");
-const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct, getSpeciaProduct}= require("../controllers/featureProduct")
+const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct, getSpeciaProduct, getFeatureProductById}= require("../controllers/featureProduct")
 const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider}= require("../controllers/slider");
 const { createPageSetUp, updatePageSetUp, getpageSetUp } = require("../controllers/pageSetUP");
 // const storage = multer.diskStorage(
@@ -364,9 +366,9 @@ router.delete(
 //coupon table api
 
 router.get(
-  "/coupons",
+  "/getCouponDataById",
   rolehandler.grantAccess("readOwn", "profile"),
-  getCouponDetail
+  getCouponDataById
 );
 router.get(
   "/coupons",
@@ -374,19 +376,17 @@ router.get(
   getAllCoupon
 );
 router.post(
-  "/coupons",
+  "/createcoupons",
   rolehandler.grantAccess("updateOwn", "profile"),
-  upload2.none(),
   createCoupon
 );
 router.put(
-  "/coupons",
+  "/updateCoupons",
   rolehandler.grantAccess("updateOwn", "profile"),
-  upload2.none(),
   updateCouponDetail
 );
 router.delete(
-  "/coupons",
+  "/deleteCoupons",
   rolehandler.grantAccess("deleteOwn", "profile"),
   deleteCoupon
 );
@@ -427,6 +427,7 @@ router.get(
   rolehandler.grantAccess("readOwn", "profile"),
   getBannerSpecial
 );
+router.get("/getBannerById",rolehandler.grantAccess("readOwn", "profile"),getBannerDataById);
 router.put(
   "/updateBannerSpecial",
   rolehandler.grantAccess("updateOwn", "profile"),
@@ -434,11 +435,11 @@ router.put(
   updateBannerSpecial
 );
 router.delete("/deleteBannerSpecial",rolehandler.grantAccess("deleteOwn", "profile"),deleteBannerSpecial);
-
 //     Feature Product Api
 
 router.post("/createFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),featureImage,createFeatureProduct);
 router.get("/getFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),getFeatureProduct);
+router.get("/getFeatureProductById",rolehandler.grantAccess("readOwn", "profile"),getFeatureProductById);
 router.put("/updateFeatureProduct",rolehandler.grantAccess("updateOwn", "profile"),featureImage,updateFeatureProduct);
 router.delete("/deleteFeatureProduct",rolehandler.grantAccess("deleteOwn", "profile"),deleteFeatureProduct);
 
