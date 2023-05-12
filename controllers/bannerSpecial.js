@@ -93,6 +93,7 @@ exports.createBannerSpecial = (req, res, next) => {
         errors: [
           {
             error: "something went wrong",
+
           },
         ],
       });

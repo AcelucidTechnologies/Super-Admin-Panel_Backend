@@ -38,6 +38,7 @@ exports.getUserPermission = (req, res, next) => {
       console.log(err);
     });
 };
+
 exports.createUserPermission = (req, res, next) => {
   let Data = req.body.Data;
   console.log(req.body.Data);
