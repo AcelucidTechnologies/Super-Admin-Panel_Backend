@@ -93,7 +93,9 @@ const multerS3 = require("multer-s3");
 const { uploadImage,up } = require("../controllers/bannerSpecial");
 const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct, getSpeciaProduct, getFeatureProductById}= require("../controllers/featureProduct")
 const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider, getSliderById}= require("../controllers/slider");
-const { createPageSetUp, updatePageSetUp, getpageSetUp } = require("../controllers/pageSetUP");
+const { createPageSetUp, updatePageSetUp, getpageSetUp, getPageSetUpDataById } = require("../controllers/pageSetUP");
+const { createSeo, getSeo } = require("../controllers/seo");
+const { createLiveChat } = require("../controllers/liveChat");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -460,7 +462,16 @@ router.get("/getPageSetUp",rolehandler.grantAccess("readOwn", "profile"),getpage
 router.post("/createPageSetUp",rolehandler.grantAccess("readOwn", "profile"),createPageSetUp);
 router.put("/updatePageSetUp",rolehandler.grantAccess("updateOwn", "profile"),updatePageSetUp);
 module.exports = router;
+router.get("/getPageSetUpById",rolehandler.grantAccess("readOwn", "profile"),getPageSetUpDataById);
 
 // Apis of banner for SuperAdmin
 router.get("/getAllBannerData",rolehandler.grantAccess("readOwn", "profile"),getAllBannerData);
 
+
+// Apis for Seo module
+router.post("/createSeo",rolehandler.grantAccess("readOwn", "profile"),createSeo);
+router.get("/getSeo",rolehandler.grantAccess("readOwn", "profile"),getSeo);
+
+//live chat Apis
+
+router.post("/creteLiveChat",rolehandler.grantAccess("readOwn", "profile"),createLiveChat);
