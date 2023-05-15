@@ -11,24 +11,24 @@ const couponSchema = new Schema(
       enum: ["fixed", "percentage"],
     },
     //customerId: { type: Schema.Types.ObjectId },
-    startDate: { type: Date },
+    startDate: { type: Date, },
     endDate: { type: Date },
-    category: {type : String},
+    category: {type : String, },
     product: {type : String},
-    usesPerCoupon: { type: Number },
+    usesPerCoupon: { type: Number, },
     status: {
       type: String,
       default: "applied",
       enum: ["applied", "pending", "cleared"]
     },
-    maxDiscount: { type: Number },
+    maxDiscount: { type: Number, },
     minDiscount: { type: Number },
     discount: { type: Number },
     description: { type: String }
   },
  
   {
-    timestamps: false,
+    timestamps: true,
     collection: "coupon",
   }
 );
