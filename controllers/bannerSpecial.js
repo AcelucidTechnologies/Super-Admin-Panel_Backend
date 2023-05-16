@@ -50,6 +50,7 @@ exports.getBannerSpecial = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
+        
         errors: [
           {
             error: "something went wrong",

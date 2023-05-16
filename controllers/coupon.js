@@ -1,6 +1,8 @@
 const Coupon = require("../models/coupon");
+
 exports.getAllCoupon = (req, res, next) => {
-  Coupon.find()
+  let { username } = req.query;
+  Coupon.find({ username: username })
     .then((response) => {
       if (response) {
         res.status(200).send(response);
