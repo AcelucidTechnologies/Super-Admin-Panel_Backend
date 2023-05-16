@@ -99,7 +99,7 @@ const { createLiveChat } = require("../controllers/liveChat");
 //const googleAnalyticsTracking = require("../models/googleAnalyticsTracking");
 const { createGoogleAnalysisKey } = require("../controllers/googleAnalyticsTracking");
 const {createMetaAnalysisKey} = require("../controllers/metaAnalyticsTracking");
-const { createRatingCriteria } = require("../controllers/ratingCriteria");
+const { createRatingCriteria, getRatingCriteria, updateRatingCriteria } = require("../controllers/ratingCriteria");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -489,5 +489,6 @@ router.post("/CreateGoogleAnalyticsTracking",rolehandler.grantAccess("readOwn", 
  router.post("/CreateMetaAnalyticsTracking",rolehandler.grantAccess("readOwn", "profile"),createMetaAnalysisKey);
 
  // Rating Criteria 
-
+ router.get("/getRatingCriteria",rolehandler.grantAccess("readOwn", "profile"),getRatingCriteria);
  router.post("/createRatingCriteria",rolehandler.grantAccess("readOwn", "profile"),createRatingCriteria);
+ router.put("/updateRatingCriteria",rolehandler.grantAccess("updateOwn", "profile"),updateRatingCriteria);

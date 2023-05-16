@@ -2,6 +2,7 @@ const metaAnalytics= require("../models/metaAnalyticsTracking")
 
 exports.createMetaAnalysisKey=(req,res,next)=>{
     let Data= new metaAnalytics({
+        username: req.body.username,
         metaAnalyticsKey: req.body.metaAnalyticsKey
     })
     Data.save().then((response)=>{

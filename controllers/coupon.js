@@ -41,6 +41,7 @@ exports.createCoupon = (req, res, next) => {
   // console.log(Data);
   let Data = new Coupon({
     username: req.body.username,
+    couponName: req.body.couponName,
     couponCode: req.body.couponCode,
     coupontype: req.body.coupontype,
     startDate: req.body.startDate,
@@ -51,6 +52,7 @@ exports.createCoupon = (req, res, next) => {
     category: req.body.category,
     product: req.body.product,
     usesPerCoupon: req.body.usesPerCoupon,
+    userPerCoupon: req.body.userPerCoupon
   });
   let data = req.body;
   console.log("data", data);

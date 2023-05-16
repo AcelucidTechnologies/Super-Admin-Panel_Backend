@@ -42,7 +42,6 @@ exports.getBannerSpecial = (req, res, next) => {
       if (response[0]) {
         res.status(200).send(response);
       } else {
-        
         res.status(404).json({
           result: "data not found"
         });
@@ -50,7 +49,7 @@ exports.getBannerSpecial = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json({
-        
+
         errors: [
           {
             error: "something went wrong",
@@ -73,7 +72,8 @@ exports.createBannerSpecial = (req, res, next) => {
     image: req.file.originalname,
   });
   BannerSpecial
-    .findOne({ bannerName: data.bannerName })
+    .findOne({ bannerName: data.bannerName,
+    username:data.username})
     .then((response) => {
       if (!response) {
         data.save().then((result) => {
