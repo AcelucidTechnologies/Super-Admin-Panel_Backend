@@ -96,6 +96,9 @@ const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider, getSlider
 const { createPageSetUp, updatePageSetUp, getpageSetUp, getPageSetUpDataById } = require("../controllers/pageSetUP");
 const { createSeo, getSeo } = require("../controllers/seo");
 const { createLiveChat } = require("../controllers/liveChat");
+//const googleAnalyticsTracking = require("../models/googleAnalyticsTracking");
+const { createGoogleAnalysisKey } = require("../controllers/googleAnalyticsTracking");
+const {createMetaAnalysisKey} = require("../controllers/metaAnalyticsTracking");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -475,3 +478,11 @@ router.get("/getSeo",rolehandler.grantAccess("readOwn", "profile"),getSeo);
 //live chat Apis
 
 router.post("/creteLiveChat",rolehandler.grantAccess("readOwn", "profile"),createLiveChat);
+
+//  googleAnalyticsTracking for Apis
+
+router.post("/CreateGoogleAnalyticsTracking",rolehandler.grantAccess("readOwn", "profile"),createGoogleAnalysisKey);
+
+ //    metaAnalyticsTracking
+
+ router.post("/CreateMetaAnalyticsTracking",rolehandler.grantAccess("readOwn", "profile"),createMetaAnalysisKey);

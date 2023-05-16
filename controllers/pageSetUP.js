@@ -96,7 +96,7 @@ exports.getAllPageSetUp=()=>{
       })
       .catch((err) => {
         res.status(500).json({
-          errors: [{ error: "Something went wrong while fetching a Page set up detail" }],
+          errors: [{ error: "Something went wrong while fetching a Page set detail" }],
         });
         console.log(err);
       });
