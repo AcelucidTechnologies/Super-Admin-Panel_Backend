@@ -1,5 +1,6 @@
 const mongoose= require("mongoose");
 const googleAnalyticskeySchema= mongoose.Schema({
+    username: {type: String},
     googleAnalyticskey : {type: String}
 })
 

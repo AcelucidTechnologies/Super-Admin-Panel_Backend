@@ -4,6 +4,8 @@ const Schema = mongoose.Schema
 const couponSchema = new Schema(
   {
     username: {type:String},
+    couponName: {type: String},
+    userPerCoupon: {type : String},
     couponCode: { type: String },
     coupontype: {
       type: String,

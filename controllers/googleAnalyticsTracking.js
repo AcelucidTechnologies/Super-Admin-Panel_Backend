@@ -1,8 +1,8 @@
 const GoogleAnalyticskey= require("../models/googleAnalyticsTracking");
 
-
 exports.createGoogleAnalysisKey=(req,res,next)=>{
 let Data= new GoogleAnalyticskey({
+    username: req.body.username,
     googleAnalyticskey: req.body.googleAnalyticskey
 })
 Data.save().then((response)=>{
