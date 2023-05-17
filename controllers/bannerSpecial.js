@@ -112,7 +112,7 @@ exports.updateBannerSpecial = (req, res, next) => {
     bannerName: req.body.bannerName,
     bannerOrder: req.body.bannerOrder,
     bannerDescription: req.body.bannerDescription,
-    image: req.file.originalname,
+   // image: req.file.originalname,
   };
 
   let check = new Promise((resolve, reject) => {

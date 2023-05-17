@@ -118,6 +118,7 @@ exports.updateFeatureProduct = (req, res, next) => {
       resolve(true);
     }
   });
+  
 
   check.then((result) => {
     if (result) {
