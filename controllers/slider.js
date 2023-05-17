@@ -89,13 +89,12 @@ exports.getSlider = (req, res, next) => {
       sliderName: req.body.sliderName,
       sliderOrder: req.body.sliderOrder,
       sliderDiscription: req.body.sliderDiscription,
-      image: req.file.originalname
+      // image: req.file.originalname
     };
-    let Data = JSON.stringify(data);
-    console.log(Data);
+    
     let check = new Promise((resolve, reject) => {
-      if (Object.keys(data).includes("image")) {
-        Data.image = req.file.originalname;
+      if (req.file) {
+        data.image = req.file.originalname;
         resolve(true);
       } else {
         resolve(true);
@@ -107,7 +106,7 @@ exports.getSlider = (req, res, next) => {
         Slider.findByIdAndUpdate(Id, data, { new: true })
           .then((response2) => {
             if (response2) {
-              console.log(response2)
+            
               res.status(200).json(response2);
             }
           })
