@@ -3,6 +3,7 @@ const multer = require("multer");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const bucket = require("../mediacontrol");
+const { errorMonitor } = require("form-data");
 
   const s3 = new S3Client({
     credentials: {
@@ -113,12 +114,10 @@ exports.updateBannerSpecial = (req, res, next) => {
     bannerDescription: req.body.bannerDescription,
     image: req.file.originalname,
   };
-  let Data = JSON.stringify(data);
-  console.log("90", Data);
-  console.log("90", data);
+
   let check = new Promise((resolve, reject) => {
-    if (Object.keys(data).includes("image")) {
-      Data.image = req.file.originalname;
+    if (req.file) {
+      data.image = req.file.originalname;
       resolve(true);
     } else {
       resolve(true);
@@ -136,15 +135,14 @@ exports.updateBannerSpecial = (req, res, next) => {
         })
         .catch((err) => {
           res.status(500).json({
-            errors: [{ error: "Something went wrong" }],
+            errors: [{ error: `Something went wrong ${err} ` }],
           });
         });
     }
   });
 };
 
-// For Delete Api 
-
+  // For Delete Api 
 exports.deleteBannerSpecial = (req, res, next) => {
   let Id;
   req.query.id ? (Id = req.query.id) : next();

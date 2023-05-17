@@ -52,7 +52,7 @@ exports.createFeatureProduct = (req, res, next) => {
       if (!response) {
         console.log("46");
         Data.save().then((result) => {
-          res.json(result);
+          res.json(req.file);
         });
       } else {
         res.status(208).json({
@@ -107,14 +107,12 @@ exports.updateFeatureProduct = (req, res, next) => {
     productPrice: req.body.productPrice,
     productModel: req.body.productModel,
     productQuantity: req.body.productQuantity,
-    image: req.file.originalname,
+    // image: req.file.originalname,
     isSpecialProduct: req.body.isSpecialProduct
   };
-  let Data = JSON.stringify(data);
-  console.log(Data);
   let check = new Promise((resolve, reject) => {
-    if (Object.keys(data).includes("image")) {
-      Data.image = req.file.originalname;
+    if (req.file) {
+      data.image = req.file.originalname;
       resolve(true);
     } else {
       resolve(true);
@@ -126,7 +124,6 @@ exports.updateFeatureProduct = (req, res, next) => {
       FeatureProduct.findByIdAndUpdate(Id, data, { new: true })
         .then((response2) => {
           if (response2) {
-            console.log(response2);
             res.status(200).json(response2);
           }
         })
