@@ -89,9 +89,9 @@ exports.userfind = (req, res) => {
   let username = req.query.username;
   console.log(username)
   User.find({username:username}).then((response) => {
+    console.log("wertyuioihgfxch",response)
     if (response) {
-      console.log(response)
-      
+      console.log("respose[0]",response[0].image)
       response[0].image?response[0].image=process.env.bucket_path + response[0].image:null;
           res.status(200).send(response);
     }
@@ -102,7 +102,13 @@ exports.userfind = (req, res) => {
     });
     console.log(err);
   }); 
+
 };
+
+
+
+
+
 
 /* Update User */
 exports.update = (req, res, next) => {
