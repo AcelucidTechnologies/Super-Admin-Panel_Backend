@@ -101,6 +101,8 @@ const { createGoogleAnalysisKey } = require("../controllers/googleAnalyticsTrack
 const {createMetaAnalysisKey} = require("../controllers/metaAnalyticsTracking");
 const { createRatingCriteria, getRatingCriteria, updateRatingCriteria, deleteRatingCriteria, getRatingCriteriaById } = require("../controllers/ratingCriteria");
 const { getRating, createRating } = require("../controllers/rating");
+const { getUserTypeList, createUserTypeList, updateUserTypeList, deleteUserTypeList, getUserTypeListById } = require("../controllers/userTypeList");
+const { createPageSetUpData, getpageSetUpData } = require("../controllers/pageSetUpData");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -500,3 +502,16 @@ router.post("/CreateGoogleAnalyticsTracking",rolehandler.grantAccess("readOwn", 
  // Rating
  router.get("/getRating",rolehandler.grantAccess("readOwn", "profile"),getRating);
  router.post("/createRating",rolehandler.grantAccess("readOwn", "profile"),createRating);
+
+
+ // userType List
+
+ router.get("/getUserTypeList",rolehandler.grantAccess("readOwn", "profile"),getUserTypeList);
+ router.post("/createUserTypeList",rolehandler.grantAccess("readOwn", "profile"),createUserTypeList);
+ router.put("/updateUserTypeList",rolehandler.grantAccess("updateOwn", "profile"),updateUserTypeList);
+ router.delete("/deleteUserTypeList",rolehandler.grantAccess("deleteOwn", "profile"),deleteUserTypeList);
+ router.get("/getUserTypeListById",rolehandler.grantAccess("readOwn", "profile"),getUserTypeListById);
+
+ router.post("/createPageSetUpData",rolehandler.grantAccess("readOwn", "profile"),createPageSetUpData);
+
+ router.get("/getpageSetUpData",rolehandler.grantAccess("readOwn", "profile"),getpageSetUpData);

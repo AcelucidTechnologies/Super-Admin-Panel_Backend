@@ -64,7 +64,7 @@ exports.createCoupon = (req, res, next) => {
         });
       } else {
         res.status(208).json({
-          error: "Page Title already exit",
+          error: " Coupon Code already exit",
         });
       }
     })

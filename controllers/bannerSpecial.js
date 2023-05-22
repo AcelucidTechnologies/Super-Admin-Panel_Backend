@@ -35,27 +35,15 @@ exports.getBannerSpecial = (req, res, next) => {
   let { username } = req.query;
   console.log("usename", username);
 
-  BannerSpecial
-    .find({ username: username })
-    .then((response) => {
-      if (response[0]) {
-        res.status(200).send(response);
-      } else {
-        res.status(404).json({
-          result: "data not found"
-        });
-      }
+  BannerSpecial.find({username: username}).then((users) => {
+    users.map((item) => {
+      if(item.image)
+      item.image = process.env.bucket_path +"Banner/" + item.image;
+    });
+      res.status(200).json(users);
     })
     .catch((err) => {
-      res.status(500).json({
-
-        errors: [
-          {
-            error: "something went wrong",
-          },
-        ],
-      });
-      console.log(error);
+      res.status(500).send(err);
     });
 };
 
@@ -70,12 +58,15 @@ exports.createBannerSpecial = (req, res, next) => {
     bannerDescription: req.body.bannerDescription,
     image: req.file.originalname,
   });
+  console.log("imagebannerscdfv")
   BannerSpecial
     .findOne({ bannerName: data.bannerName,
     username:data.username})
     .then((response) => {
       if (!response) {
+        console.log("image banenr" ,!response)
         data.save().then((result) => {
+         
           res.json(result);
         });
       } else {
@@ -125,7 +116,6 @@ exports.updateBannerSpecial = (req, res, next) => {
     if (result) {
       BannerSpecial
         .findByIdAndUpdate(Id, data, { new: true })
-        //console.log("103",Data)
         .then((response2) => {
           if (response2) {
             res.status(200).send(response2);
@@ -181,16 +171,18 @@ exports.getBannerDataById = (req, res, next) => {
   let  Id
   if (req.query.id) { Id = req.query.id }
   else { return next() }
-  BannerSpecial.findById(Id)
-    .then((response) => {
-      if (response) {
-        res.status(200).send(response);
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        errors: [{ error: "Something went wrong while fetching a Banner Special detail" }],
-      });
-      console.log(err);
+  BannerSpecial.findById(Id).then((response) => {
+   
+    if (response) {
+      response.image?response.image=process.env.bucket_path + "Banner/" + response.image:null;
+          res.status(200).send(response);
+    }
+  })
+  .catch((err) => {
+    res.status(500).json({
+      errors: [{ error: "Failed to fetch user details" }],
     });
+  }); 
 };
+
+
