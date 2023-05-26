@@ -2,13 +2,6 @@ const mongoose = require("mongoose");
 const RatingCriteria = require("../models/ratingCriteria");
 const Schema = mongoose.Schema;
 
-// const RatingTypeSchema = new Schema([
-//   {
-//     criteriaId: { type: String },
-//     value: { type: Number },
-//   },
-// ]);
-
 const RatingSchema = new Schema({
   username: {type: String},
   reviewer: { type: String },

@@ -34,6 +34,8 @@ const {
   getAllCategory,
   updateCategory,
   deleteCategory,
+  createCategory,
+  categoryImage,
 } = require("../controllers/category");
 const {
   createProduct,
@@ -41,6 +43,7 @@ const {
   getProduct,
   deleteProduct,
   updateProduct,
+  productImage,
 } = require("../controllers/product");
 const passport = require("passport");
 const multer = require("multer");
@@ -90,19 +93,82 @@ const {
 } = require("../controllers/bannerSpecial");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
-const { uploadImage,up } = require("../controllers/bannerSpecial");
-const {featureImage,createFeatureProduct,getFeatureProduct,updateFeatureProduct,deleteFeatureProduct, getSpeciaProduct, getFeatureProductById}= require("../controllers/featureProduct")
-const {createSlider,sliderImage,getSlider, updateSlider, deleteSlider, getSliderById}= require("../controllers/slider");
-const { createPageSetUp, updatePageSetUp, getpageSetUp, getPageSetUpDataById } = require("../controllers/pageSetUP");
+const { uploadImage, up } = require("../controllers/bannerSpecial");
+const {
+  featureImage,
+  createFeatureProduct,
+  getFeatureProduct,
+  updateFeatureProduct,
+  deleteFeatureProduct,
+  getSpeciaProduct,
+  getFeatureProductById,
+} = require("../controllers/featureProduct");
+const {
+  createSlider,
+  sliderImage,
+  getSlider,
+  updateSlider,
+  deleteSlider,
+  getSliderById,
+} = require("../controllers/slider");
+const {
+  createPageSetUp,
+  updatePageSetUp,
+  getpageSetUp,
+  getPageSetUpDataById,
+} = require("../controllers/pageSetUP");
 const { createSeo, getSeo } = require("../controllers/seo");
 const { createLiveChat } = require("../controllers/liveChat");
 //const googleAnalyticsTracking = require("../models/googleAnalyticsTracking");
-const { createGoogleAnalysisKey } = require("../controllers/googleAnalyticsTracking");
-const {createMetaAnalysisKey} = require("../controllers/metaAnalyticsTracking");
-const { createRatingCriteria, getRatingCriteria, updateRatingCriteria, deleteRatingCriteria, getRatingCriteriaById } = require("../controllers/ratingCriteria");
-const { getRating, createRating } = require("../controllers/rating");
-const { getUserTypeList, createUserTypeList, updateUserTypeList, deleteUserTypeList, getUserTypeListById } = require("../controllers/userTypeList");
-const { createPageSetUpData, getpageSetUpData } = require("../controllers/pageSetUpData");
+const {
+  createGoogleAnalysisKey,
+} = require("../controllers/googleAnalyticsTracking");
+const {
+  createMetaAnalysisKey,
+} = require("../controllers/metaAnalyticsTracking");
+const {
+  createRatingCriteria,
+  getRatingCriteria,
+  updateRatingCriteria,
+  deleteRatingCriteria,
+  getRatingCriteriaById,
+} = require("../controllers/ratingCriteria");
+const {
+  getRating,
+  createRating,
+  deleteRating,
+  updateRating,
+  getRatingById,
+} = require("../controllers/rating");
+const {
+  getUserTypeList,
+  createUserTypeList,
+  updateUserTypeList,
+  deleteUserTypeList,
+  getUserTypeListById,
+} = require("../controllers/userTypeList");
+const {
+  createPageSetUpData,
+  getpageSetUpData,
+} = require("../controllers/pageSetUpData");
+const { createPushNotification } = require("../controllers/pushNotification");
+const {
+  createReviewList,
+  getAllReviewList,
+  updateReviewList,
+  deleteReviewList,
+  getRatingReviewById,
+} = require("../controllers/reviewList");
+const {
+  createReviewerNameList,
+  getReviewerNameList,
+} = require("../controllers/reviewerNameList");
+const {
+  createReviewerList,
+  getReviewerList,
+  updateReviewerList,
+  deleteReviewerList,
+} = require("../controllers/reviewerList");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -239,26 +305,33 @@ router.get(
   getAllCategory
 );
 router.put(
-  "/categories",
+  "/updateCategories",
   rolehandler.grantAccess("updateOwn", "profile"),
-  upload2.single("image"),
+  categoryImage,
   updateCategory
 );
 router.delete(
-  "/categories",
+  "/deleteCategories",
   rolehandler.grantAccess("deleteOwn", "profile"),
   deleteCategory
+);
+router.post(
+  "/createCategory",
+  rolehandler.grantAccess("readOwn", "profile"),
+  categoryImage,
+  createCategory
 );
 
 //product table api
 
 router.post(
-  "/products",
+  "/createProducts",
   rolehandler.grantAccess("createOwn", "profile"),
-  upload2.fields([
-    { name: "image", maxCount: 1 },
-    { name: "video", maxCount: 1 },
-  ]),
+  productImage,
+  // upload2.fields([
+  //   { name: "image", maxCount: 1 },
+  //    { name: "video", maxCount: 1 },
+  // ]),
   createProduct
 );
 router.get(
@@ -281,7 +354,7 @@ router.put(
   updateProduct
 );
 router.delete(
-  "/products",
+  "/deleteProducts",
   rolehandler.grantAccess("deleteOwn", "profile"),
   deleteProduct
 );
@@ -436,82 +509,318 @@ router.get(
   rolehandler.grantAccess("readOwn", "profile"),
   getBannerSpecial
 );
-router.get("/getBannerById",rolehandler.grantAccess("readOwn", "profile"),getBannerDataById);
+router.get(
+  "/getBannerById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getBannerDataById
+);
 router.put(
   "/updateBannerSpecial",
   rolehandler.grantAccess("updateOwn", "profile"),
   uploadImage,
   updateBannerSpecial
 );
-router.delete("/deleteBannerSpecial",rolehandler.grantAccess("deleteOwn", "profile"),deleteBannerSpecial);
+router.delete(
+  "/deleteBannerSpecial",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteBannerSpecial
+);
 //     Feature Product Api
 
-router.post("/createFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),featureImage,createFeatureProduct);
-router.get("/getFeatureProduct",rolehandler.grantAccess("readOwn", "profile"),getFeatureProduct);
-router.get("/getFeatureProductById",rolehandler.grantAccess("readOwn", "profile"),getFeatureProductById);
-router.put("/updateFeatureProduct",rolehandler.grantAccess("updateOwn", "profile"),featureImage,updateFeatureProduct);
-router.delete("/deleteFeatureProduct",rolehandler.grantAccess("deleteOwn", "profile"),deleteFeatureProduct);
+router.post(
+  "/createFeatureProduct",
+  rolehandler.grantAccess("readOwn", "profile"),
+  featureImage,
+  createFeatureProduct
+);
+router.get(
+  "/getFeatureProduct",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getFeatureProduct
+);
+router.get(
+  "/getFeatureProductById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getFeatureProductById
+);
+router.put(
+  "/updateFeatureProduct",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  featureImage,
+  updateFeatureProduct
+);
+router.delete(
+  "/deleteFeatureProduct",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteFeatureProduct
+);
 
 //   for Special product Api
 
-router.get("/getSpecialProduct",rolehandler.grantAccess("readOwn", "profile"),getSpeciaProduct)
+router.get(
+  "/getSpecialProduct",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getSpeciaProduct
+);
 
 //  Slider product api
 
-router.post("/createSlider",rolehandler.grantAccess("readOwn", "profile"),sliderImage,createSlider);
-router.get("/getSlider",rolehandler.grantAccess("readOwn", "profile"),getSlider);
-router.put("/updateSlider",rolehandler.grantAccess("updateOwn", "profile"),sliderImage,updateSlider);
-router.delete("/deleteSlider",rolehandler.grantAccess("deleteOwn", "profile"),deleteSlider);
-router.get("/getSliderById",rolehandler.grantAccess("readOwn", "profile"),getSliderById);
+router.post(
+  "/createSlider",
+  rolehandler.grantAccess("readOwn", "profile"),
+  sliderImage,
+  createSlider
+);
+router.get(
+  "/getSlider",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getSlider
+);
+router.put(
+  "/updateSlider",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  sliderImage,
+  updateSlider
+);
+router.delete(
+  "/deleteSlider",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteSlider
+);
+router.get(
+  "/getSliderById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getSliderById
+);
+
 //     Page SetUp Apis
 
-router.get("/getPageSetUp",rolehandler.grantAccess("readOwn", "profile"),getpageSetUp);
-router.post("/createPageSetUp",rolehandler.grantAccess("readOwn", "profile"),createPageSetUp);
-router.put("/updatePageSetUp",rolehandler.grantAccess("updateOwn", "profile"),updatePageSetUp);
+router.get(
+  "/getPageSetUp",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getpageSetUp
+);
+router.post(
+  "/createPageSetUp",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createPageSetUp
+);
+router.put(
+  "/updatePageSetUp",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updatePageSetUp
+);
 module.exports = router;
-router.get("/getPageSetUpById",rolehandler.grantAccess("readOwn", "profile"),getPageSetUpDataById);
+router.get(
+  "/getPageSetUpById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getPageSetUpDataById
+);
+
+// page Set up Api
+router.post(
+  "/createPageSetUpData",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createPageSetUpData
+);
+router.get(
+  "/getpageSetUpData",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getpageSetUpData
+);
 
 // Apis of banner for SuperAdmin
-router.get("/getAllBannerData",rolehandler.grantAccess("readOwn", "profile"),getAllBannerData);
-
+router.get(
+  "/getAllBannerData",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAllBannerData
+);
 
 // Apis for Seo module
-router.post("/createSeo",rolehandler.grantAccess("readOwn", "profile"),createSeo);
-router.get("/getSeo",rolehandler.grantAccess("readOwn", "profile"),getSeo);
+router.post(
+  "/createSeo",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createSeo
+);
+router.get("/getSeo", rolehandler.grantAccess("readOwn", "profile"), getSeo);
 
 //live chat Apis
 
-router.post("/creteLiveChat",rolehandler.grantAccess("readOwn", "profile"),createLiveChat);
+router.post(
+  "/creteLiveChat",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createLiveChat
+);
+
+// Push Notification
+
+router.post(
+  "/createPushNotification",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createPushNotification
+);
 
 //  googleAnalyticsTracking for Apis
 
-router.post("/CreateGoogleAnalyticsTracking",rolehandler.grantAccess("readOwn", "profile"),createGoogleAnalysisKey);
+router.post(
+  "/CreateGoogleAnalyticsTracking",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createGoogleAnalysisKey
+);
 
- //    metaAnalyticsTracking
+// metaAnalyticsTracking
 
- router.post("/CreateMetaAnalyticsTracking",rolehandler.grantAccess("readOwn", "profile"),createMetaAnalysisKey);
+router.post(
+  "/CreateMetaAnalyticsTracking",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createMetaAnalysisKey
+);
 
- // Rating Criteria 
- router.get("/getRatingCriteria",rolehandler.grantAccess("readOwn", "profile"),getRatingCriteria);
- router.post("/createRatingCriteria",rolehandler.grantAccess("readOwn", "profile"),createRatingCriteria);
- router.put("/updateRatingCriteria",rolehandler.grantAccess("updateOwn", "profile"),updateRatingCriteria);
- router.delete("/deleteRatingCriteria",rolehandler.grantAccess("deleteOwn", "profile"),deleteRatingCriteria);
- router.get("/getRatingCriteriaById",rolehandler.grantAccess("readOwn", "profile"),getRatingCriteriaById);
+// Rating Criteria
+router.get(
+  "/getRatingCriteria",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getRatingCriteria
+);
+router.post(
+  "/createRatingCriteria",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createRatingCriteria
+);
+router.put(
+  "/updateRatingCriteria",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateRatingCriteria
+);
+router.delete(
+  "/deleteRatingCriteria",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteRatingCriteria
+);
+router.get(
+  "/getRatingCriteriaById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getRatingCriteriaById
+);
+
+// Rating
+router.get(
+  "/getRating",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getRating
+);
+router.post(
+  "/createRating",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createRating
+);
+router.put(
+  "/updateRating",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateRating
+);
+router.delete(
+  "/deleteRating",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteRating
+);
+router.get(
+  "/getRatingById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getRatingById
+);
+
+// userType List
+
+router.get(
+  "/getUserTypeList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getUserTypeList
+);
+router.post(
+  "/createUserTypeList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createUserTypeList
+);
+router.put(
+  "/updateUserTypeList",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateUserTypeList
+);
+router.delete(
+  "/deleteUserTypeList",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteUserTypeList
+);
+router.get(
+  "/getUserTypeListById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getUserTypeListById
+);
+
+//review List Api
+
+router.post(
+  "/createReviewList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createReviewList
+);
+router.get(
+  "/getReviewList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAllReviewList
+);
+router.put(
+  "/updateReviewList",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateReviewList
+);
+router.delete(
+  "/deleteReviewList",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteReviewList
+);
+router.get(
+  "/getReviewListById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getRatingReviewById
+);
+
+// ReviewerNameList
+
+router.post(
+  "/createReviewerNameList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createReviewerNameList
+);
+router.get(
+  "/getReviewerNameList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getReviewerNameList
+);
+
+// Reviewer List
+
+router.post(
+  "/createReviewerList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createReviewerList
+);
+router.get(
+  "/getReviewerList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getReviewerList
+);
+router.put(
+  "/updateReviewerList",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateReviewerList
+);
+router.delete(
+  "/deleteReviewerList",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteReviewerList
+);
 
 
- // Rating
- router.get("/getRating",rolehandler.grantAccess("readOwn", "profile"),getRating);
- router.post("/createRating",rolehandler.grantAccess("readOwn", "profile"),createRating);
 
-
- // userType List
-
- router.get("/getUserTypeList",rolehandler.grantAccess("readOwn", "profile"),getUserTypeList);
- router.post("/createUserTypeList",rolehandler.grantAccess("readOwn", "profile"),createUserTypeList);
- router.put("/updateUserTypeList",rolehandler.grantAccess("updateOwn", "profile"),updateUserTypeList);
- router.delete("/deleteUserTypeList",rolehandler.grantAccess("deleteOwn", "profile"),deleteUserTypeList);
- router.get("/getUserTypeListById",rolehandler.grantAccess("readOwn", "profile"),getUserTypeListById);
-
- router.post("/createPageSetUpData",rolehandler.grantAccess("readOwn", "profile"),createPageSetUpData);
-
- router.get("/getpageSetUpData",rolehandler.grantAccess("readOwn", "profile"),getpageSetUpData);

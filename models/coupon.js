@@ -9,8 +9,8 @@ const couponSchema = new Schema(
     couponCode: { type: String },
     coupontype: {
       type: String,
-      default: "fixed",
-      enum: ["fixed", "percentage"],
+      default: "Fixed",
+      enum: ["Fixed", "Percentage(%)"],
     },
     //customerId: { type: Schema.Types.ObjectId },
     startDate: { type: Date, },
@@ -19,6 +19,7 @@ const couponSchema = new Schema(
     product: {type : String},
     usesPerCoupon: { type: Number, },
     status: {
+      
       type: String,
       default: "applied",
       enum: ["applied", "pending", "cleared"]
@@ -28,6 +29,7 @@ const couponSchema = new Schema(
     discount: { type: Number },
     description: { type: String }
   },
+  
  
   {
     timestamps: true,
