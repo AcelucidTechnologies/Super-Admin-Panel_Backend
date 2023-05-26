@@ -33,14 +33,13 @@ exports.uploadImage = uploadData.single("image")
 
 exports.getBannerSpecial = (req, res, next) => {
   let { username } = req.query;
-  console.log("usename", username);
-
-  BannerSpecial.find({username: username}).then((users) => {
-    users.map((item) => {
+  BannerSpecial.find({username: username}).sort({ bannerOrder: 1 }).then((response) => {
+    response.map((item) => {
       if(item.image)
       item.image = process.env.bucket_path +"Banner/" + item.image;
     });
-      res.status(200).json(users);
+    
+      res.status(200).json(response);
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -50,7 +49,6 @@ exports.getBannerSpecial = (req, res, next) => {
 // For Create Api 
 
 exports.createBannerSpecial = (req, res, next) => {
-  
   let data = new BannerSpecial({
     username: req.body.username,
     bannerName: req.body.bannerName,
@@ -58,15 +56,12 @@ exports.createBannerSpecial = (req, res, next) => {
     bannerDescription: req.body.bannerDescription,
     image: req.file.originalname,
   });
-  console.log("imagebannerscdfv")
   BannerSpecial
     .findOne({ bannerName: data.bannerName,
     username:data.username})
     .then((response) => {
       if (!response) {
-        console.log("image banenr" ,!response)
         data.save().then((result) => {
-         
           res.json(result);
         });
       } else {
@@ -156,7 +151,7 @@ BannerSpecial.find().then((response)=>{
     res.status(200).json(response)
   }
   else{
-    res.status(404).json({
+    res.status(208).json({
       error: "Data not Found"
     })
   }

@@ -3,21 +3,24 @@ const Schema = mongoose.Schema
 
 const categorySchema = new Schema(
   {
-    name: { type: String, lowercase: true },
-    parentcategoryId: {
-      type: Schema.Types.ObjectId,
-    },
+    username: {type: String},
+    categoryName: { type: String},
+    subCategory: {type: String},
     status: { type: Boolean },
     image: { type: String },
-    description: { type: String },
-    meta_description: {
-      meta_title: { type: String },
-      meta_descrip: { type: String },
-      meta_keyword: { type: String },
-    },
+   categoryOrder: {type: Number}
+    // meta_description: {
+    //   meta_title: { type: String },
+    //   meta_descrip: { type: String },
+    //   meta_keyword: { type: String },
+    // },
+        // parentcategoryId: {
+    //   type: Schema.Types.ObjectId,
+    // },
+       // description: { type: String },
   },
   {
-    timestamps: false,
+    timestamps: true,
     collection: "category",
   }
 );

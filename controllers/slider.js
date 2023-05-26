@@ -64,7 +64,7 @@ exports.createSlider = (req, res, next) => {
 
 exports.getSlider = (req, res, next) => {
   let { username } = req.query;
-  Slider.find({ username: username })
+  Slider.find({ username: username }).sort({ sliderOrder: 1 })
     .then((response) => {
       if (response[0]) {
         res.status(200).json(response);

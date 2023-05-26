@@ -2,6 +2,7 @@ const LiveChat= require("../models/liveChat");
 
 exports.createLiveChat=(req,res,next)=>{
 let data= new LiveChat({
+    username: req.body.username,
     propertyId: req.body.propertyId
 })
 console.log(req.body.propertyId)
