@@ -9,17 +9,16 @@ const couponSchema = new Schema(
     couponCode: { type: String },
     coupontype: {
       type: String,
-      default: "Fixed",
-      enum: ["Fixed", "Percentage(%)"],
+      default: "Flat",
+      enum: ["Flat", "Percentage(%)"],
     },
     //customerId: { type: Schema.Types.ObjectId },
-    startDate: { type: Date, },
+    startDate: { type: Date},
     endDate: { type: Date },
-    category: {type : String, },
+    category: {type : String},
     product: {type : String},
-    usesPerCoupon: { type: Number, },
+    usesPerCoupon: { type: Number},
     status: {
-      
       type: String,
       default: "applied",
       enum: ["applied", "pending", "cleared"]
@@ -29,13 +28,13 @@ const couponSchema = new Schema(
     discount: { type: Number },
     description: { type: String }
   },
-  
  
   {
     timestamps: true,
     collection: "coupon",
   }
 );
+
 
   module.exports = mongoose.model("Coupon", couponSchema)
   

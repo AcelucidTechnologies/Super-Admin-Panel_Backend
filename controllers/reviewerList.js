@@ -10,7 +10,7 @@ exports.createReviewerList = (req, res, next) => {
     status: req.body.status,
   });
 
-  ReviewerList.findOne({ email: data.email, username: data.username })
+  ReviewerList.findOne({ name: data.name, username: data.username })
     .then((response) => {
       if (!response) {
         data.save().then((result) => {
@@ -36,7 +36,7 @@ exports.getReviewerList = (req, res, next) => {
       if (response) {
         res.status(200).json(response);
       } else {
-        res.status(404).json({
+        res.status(204).json({
           error: "Data not Found",
         });
       }

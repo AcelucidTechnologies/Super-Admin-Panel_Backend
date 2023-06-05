@@ -3,7 +3,6 @@ const multer = require("multer");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const bucket = require("../mediacontrol");
-const { response } = require("express");
 const featureProduct = require("../models/featureProduct");
 
 const s3 = new S3Client({
@@ -45,7 +44,6 @@ exports.createFeatureProduct = (req, res, next) => {
   });
   console.log("44", Data);
   FeatureProduct.findOne({
-    productModel: Data.productModel,
     username: Data.username,
   })
     .then((response) => {

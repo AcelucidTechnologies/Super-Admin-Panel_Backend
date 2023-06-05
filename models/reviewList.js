@@ -7,6 +7,7 @@ const reviewListSchema = Schema({
   publishingSiteUrl: { type: String, required: true },
   rating: { type: Number, max: 5, min: 1 },
   status: { type: String,required: true },
+  reviewListId: { type: Schema.Types.ObjectId },
 });
 
 module.exports = mongoose.model("reviewList", reviewListSchema);
