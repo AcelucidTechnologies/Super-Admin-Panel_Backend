@@ -139,6 +139,7 @@ const {
   deleteRating,
   updateRating,
   getRatingById,
+  getTotalRating,
 } = require("../controllers/rating");
 const {
   getUserTypeList,
@@ -169,6 +170,7 @@ const {
   updateReviewerList,
   deleteReviewerList,
 } = require("../controllers/reviewerList");
+const { createNewReviewerName } = require("../controllers/newReviewerName");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -730,6 +732,11 @@ router.get(
   getRatingById
 );
 
+router.get(
+  "/getAllRating",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getTotalRating
+);
 // userType List
 
 router.get(
@@ -821,6 +828,16 @@ router.delete(
   rolehandler.grantAccess("deleteOwn", "profile"),
   deleteReviewerList
 );
+
+//    NewReviewername
+
+router.post(
+  "/createNewReviewerName",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createNewReviewerName
+);
+
+
 
 
 

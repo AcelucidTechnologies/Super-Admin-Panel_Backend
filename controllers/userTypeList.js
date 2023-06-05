@@ -62,7 +62,7 @@ exports.getUserTypeList=(req,res,next)=>{
       })
       .catch((err) => {
         res.status(500).json({
-          errors: [{ error: "Something went wrong while updating Rating Criteria" }],
+          errors: [{ error: "Something went wrong while updating User Type List" }],
         });
       });
   };

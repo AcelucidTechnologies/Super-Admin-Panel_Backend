@@ -6,9 +6,9 @@ const reviewerListSchema = Schema({
   username: { type: String },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  rating: { type: Number, max: 5, min: 1 },
-  firstRating: { type: Date },
-  status: { type: String, default: "InActive" },
+  ratingCount: { type: Number, default: 0},
+  firstRating: { type: Date, default: Date.now },
+  status: { type: String, default: "Active" },
 });
 
 module.exports = mongoose.model("reviewerList", reviewerListSchema);
