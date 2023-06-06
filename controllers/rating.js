@@ -1,6 +1,7 @@
 
 const Rating = require("../models/rating");
 const Reviewer = require("../models/reviewerList");
+const ReviewList = require("../models/reviewList");
 
 exports.getRating = (req, res, next) => {
   let { username } = req.query;
@@ -76,36 +77,35 @@ exports.createRating = (req, res, next) => {
     reviewSubject: req.body.reviewSubject,
     ratings: req.body.ratings,
   });
-  // Update reviewer count in the reviewer collection
-  Reviewer.findOneAndUpdate(
-    { name: req.body.reviewer },
-    { $inc: { ratingCount: 1 } },
+
+
+  ReviewList.findOneAndUpdate(
+    { reviewSubject: req.body.review },
+    { $inc: { ratingCountReview: 1 } },
     { new: true, upsert: true }
   )
     .then((response) => {
       if (response) {
-        // Reviewer count updated or new reviewer created
-        console.log("Reviewer count updated:", response);
-        
+        // Reviewer count updated or
+
       } else {
-        console.log("Failed to update reviewer count.");
+        console.log("Failed reviewer count.");
       }
-      // Find or create the reviewer in the ReviewerList table
-      console.log("93")
-      Reviewer.findOneAndUpdate(
-        { name: req.body.reviewer },
+      // Find or create the reviewer in the Review List table
+      console.log("153")
+      ReviewList.findOneAndUpdate(
+        { reviewSubject: req.body.review },
         { new: true, upsert: true }
       )
         .then((listResponse) => {
           if (listResponse) {
-            
-            console.log("100",listResponse)
-            // Increment the count in ReviewerList table
+            console.log("161",listResponse)
+            // Increment the count in Review List table
             listResponse.count += 1;
             listResponse
               .save()
               .then(() => {
-                console.log("Count increased in ReviewerList:", listResponse);
+                console.log("Count increased in Review List:", listResponse);
                 // Save the rating entry
                 return data.save();
               })
@@ -116,11 +116,67 @@ exports.createRating = (req, res, next) => {
                 res.status(500).json({
                   errors: [
                     {
-                      error: "Something went wrong 116",
+                      error: `Something went wrong 119 ${err}`,
                     },
                   ],
                 });
               });
+          } else {
+            console.log(
+              "Failed to find or create review List in Review List table."
+            );
+          }
+        })
+
+        .catch((err) => {
+          res.status(500).json({
+            errors: [
+              {
+                error: "Something went wrong 194",
+              },
+            ],
+          });
+        });
+    })
+  .catch((err) => {
+    res.status(500).json({
+      errors: [
+        {
+          error: "Something went wrong 141",
+        },
+      ],
+    });
+  });
+
+
+  // Update reviewer count in the reviewer collection
+  Reviewer.findOneAndUpdate(
+    { name: req.body.reviewer },
+    { $inc: { ratingCount: 1 } },
+    { new: true, upsert: true }
+  )
+    .then((result) => {
+      if (result) {
+        // Reviewer count updated or new reviewer created
+        console.log("Reviewer count updated:", result);
+      } else {
+        console.log("Failed to update reviewer count.");
+      }
+      // Find or create the reviewer in the ReviewerList table
+      Reviewer.findOneAndUpdate(
+        { name: req.body.reviewer },
+        { new: true, upsert: true }
+      )
+        .then((listResult) => {
+          if (listResult) {
+            // Increment the count in ReviewerList table
+            listResult.count += 1;
+            listResult
+              .save()
+              .then(() => {
+                console.log("Count increased in ReviewerList:", listResult);
+                // Save the rating entry
+              })
           } else {
             console.log(
               "Failed to find or create reviewer in ReviewerList table."
@@ -131,21 +187,13 @@ exports.createRating = (req, res, next) => {
           res.status(500).json({
             errors: [
               {
-                error: "Something went wrong 131",
+                error: "Something went wrong 133",
               },
             ],
           });
         });
     })
-    .catch((err) => {
-      res.status(500).json({
-        errors: [
-          {
-            error: "Something went wrong 141",
-          },
-        ],
-      });
-    });
+
 };
 
 // exports.createRating = (req, res, next) => {

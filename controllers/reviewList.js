@@ -1,4 +1,4 @@
-const reviewList = require("../models/reviewList");
+//const reviewList = require("../models/reviewList");
 const ReviewList = require("../models/reviewList");
 
 exports.createReviewList = (req, res, next) => {
@@ -44,6 +44,7 @@ exports.getAllReviewList = (req, res, next) => {
   ReviewList.find({ username: username })
     .then((response) => {
       if (response) {
+        console.log("234",response)
         res.status(200).json(response);
       } else {
         res.status(404).json({
@@ -101,12 +102,11 @@ exports.deleteReviewList = (req, res, next) => {
       });
   };
 
-
   exports.getRatingReviewById = (req, res, next) => {
     let  Id
     if (req.query.id) { Id = req.query.id }
     else { return next() }
-    reviewList.findById(Id)
+    ReviewList.findById(Id)
       .then((response) => {
         if (response) {
           res.status(200).send(response);
