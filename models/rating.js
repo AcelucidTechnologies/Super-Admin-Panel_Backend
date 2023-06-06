@@ -23,7 +23,8 @@ const RatingSchema = new Schema({
 {
   timestamps: true,
   collection: "ratings",
-});
+}
+);
 module.exports = mongoose.model("rating", RatingSchema);
 
 // const mongoose = require('mongoose');

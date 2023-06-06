@@ -169,6 +169,7 @@ const {
   getReviewerList,
   updateReviewerList,
   deleteReviewerList,
+  getReviewerListById,
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
 // const storage = multer.diskStorage(
@@ -827,6 +828,11 @@ router.delete(
   "/deleteReviewerList",
   rolehandler.grantAccess("deleteOwn", "profile"),
   deleteReviewerList
+);
+router.get(
+  "/getReviewerListById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getReviewerListById
 );
 
 //    NewReviewername

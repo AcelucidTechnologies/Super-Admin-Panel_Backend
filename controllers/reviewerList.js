@@ -93,3 +93,21 @@ exports.deleteReviewerList = (req, res, next) => {
         });
       });
   };
+
+  exports.getReviewerListById = (req, res, next) => {
+    let  Id
+    if (req.query.id) { Id = req.query.id }
+    else { return next() }
+    ReviewerList.findById(Id)
+      .then((response) => {
+        if (response) {
+          res.status(200).send(response);
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          errors: [{ error: "Something went wrong while fetching a Reviewer List detail" }],
+        });
+        console.log(err);
+      });
+  };
