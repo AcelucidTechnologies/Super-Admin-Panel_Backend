@@ -246,13 +246,14 @@ exports.updateRating = (req, res, next) => {
   let data = {
     username: req.body.username,
     reviewer: req.body.reviewer,
+    review: req.body.review,
     overall: req.body.overall,
     pros: req.body.pros,
     cons: req.body.cons,
     userType: req.body.userType,
-    status: req.body.userType,
+    status: req.body.status,
     reviewSubject: req.body.reviewSubject,
-    ratingType: req.body.ratingType,
+    ratings: req.body.ratings,
   };
   Rating.findByIdAndUpdate(Id, data, { new: true })
     .then((response) => {
