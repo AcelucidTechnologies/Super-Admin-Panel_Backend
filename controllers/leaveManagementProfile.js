@@ -122,6 +122,7 @@ exports.deleteLeaveProfile = (req, res, next) => {
         console.log(err);
       });
   };
+
   exports.updateLeaveProfile = (req, res, next) => {
     let Id;
     if (req.query.id) {
@@ -130,7 +131,7 @@ exports.deleteLeaveProfile = (req, res, next) => {
       return next();
     }
     let Data = req.body;
-    console.log(Data);
+    console.log(Data,"Data")
     LeaveManagementProfile.findByIdAndUpdate(Id, Data, { new: true })
       .then((response) => {
         if (response) {
@@ -145,7 +146,7 @@ exports.deleteLeaveProfile = (req, res, next) => {
       .catch((err) => {
         res.status(500).json({
           errors: [
-            { error: "Something went wrong" },
+            { error: `Something went wrong ${err}` },
           ],
         });
       });
