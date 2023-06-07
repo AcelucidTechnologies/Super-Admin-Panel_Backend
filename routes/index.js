@@ -172,6 +172,8 @@ const {
   getReviewerListById,
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
+const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById } = require("../controllers/leaveManagementProfile");
+const leaveManagementProfile = require("../models/leaveManagementProfile");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -843,6 +845,33 @@ router.post(
   createNewReviewerName
 );
 
+   // Leave management Profile Apis
+
+   router.get(
+    "/getLeaveProfile",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getLeaveProfile
+  );
+  router.get(
+    "/getLeaveProfileById",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getLeaveProfileById
+  );
+   router.post(
+    "/createLeaveProfile",
+    rolehandler.grantAccess("readOwn", "profile"),
+    createLeaveManagementProfile
+  );
+  router.delete(
+    "/deleteLeaveProfile",
+    rolehandler.grantAccess("deleteOwn", "profile"),
+    deleteLeaveProfile
+  );
+  router.put(
+    "/updateLeaveProfile",
+    rolehandler.grantAccess("updateOwn", "profile"),
+    leaveManagementProfile
+  );
 
 
 

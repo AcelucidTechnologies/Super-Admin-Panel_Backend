@@ -78,7 +78,6 @@ exports.createRating = (req, res, next) => {
     ratings: req.body.ratings,
   });
 
-
   ReviewList.findOneAndUpdate(
     { reviewSubject: req.body.review },
     { $inc: { ratingCountReview: 1 } },
@@ -291,7 +290,7 @@ exports.getRatingById = (req, res, next) => {
 exports.getTotalRating = (req, res, next) => {
   // Rating.find().select({ ratingType: 1, _id: 0 })
   Rating.find()
-    .select({ ratings: 1, overall: 1, AverageRating: 1 })
+    .select({})
     .then((response) => {
       if (response) {
         response.forEach((obj) => {

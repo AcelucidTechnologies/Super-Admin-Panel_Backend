@@ -2,34 +2,34 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const leaveProfileSchema = new Schema({
-  employeeId: { type: String, unique: true },
+  username: {type: String},
+  employeeId: {
+    type: String,
+    default: () => generateEmployeeId(),
+  },
   employeeFullName: { type: String },
   FirstName: { type: String },
   lastName: { type: String },
-  email: { type: String, unique: true },
+  email: { type: String},
   department: [
     {
-      name: { type: String },
       department: { type: String },
     },
   ],
   role: { type: String },
   designation: [
     {
-      name: { type: String },
       designation: { type: String },
     },
   ],
   employmentType: [
     {
-      name: { type: String },
       employmentType: { type: String },
     },
   ],
 
   location: [
     {
-      name: { type: String },
       location: { type: String },
     },
   ],
@@ -61,7 +61,7 @@ const leaveProfileSchema = new Schema({
       address1: { type: String },
       address2: { type: String },
       country: { type: String },
-      State: { type: String },
+      state: { type: String },
       city: { type: String },
       pincode: { type: String },
     },
@@ -72,6 +72,7 @@ const leaveProfileSchema = new Schema({
       State: { type: String },
       city: { type: String },
       pincode: { type: String },
+
     },
   },
   separationOfDate: { type: String },
@@ -101,4 +102,26 @@ const leaveProfileSchema = new Schema({
       dateOfCompletion: { type: String },
     },
   ],
-});
+},
+
+{
+  timestamps: true,
+  collection: "leaveManagementProfile",
+}
+);
+
+function generateEmployeeId() {
+  const currentYear = new Date().getMilliseconds().toString().substr(-2);
+  console.log("new date",currentYear)
+  const paddedSequentialNumber = generateSequentialNumber().toString().padStart(4, '0');
+  console.log("123",generateSequentialNumber())
+  console.log("paddedSequentialNumber" ,paddedSequentialNumber)
+  return `EMP-${currentYear}-${paddedSequentialNumber}`;
+}
+
+let sequentialNumber = 0;
+
+function generateSequentialNumber() {
+  return ++sequentialNumber;
+}
+module.exports= mongoose.model("leaveManagementProfile",leaveProfileSchema)
