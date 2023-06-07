@@ -5,7 +5,7 @@ const couponSchema = new Schema(
   {
     username: {type:String},
     couponName: {type: String},
-    userPerCoupon: {type : String},
+    userPerCoupon: {type : Number},
     couponCode: { type: String },
     coupontype: {
       type: String,
@@ -28,6 +28,7 @@ const couponSchema = new Schema(
     discount: { type: Number },
     description: { type: String }
   },
+
  
   {
     timestamps: true,
