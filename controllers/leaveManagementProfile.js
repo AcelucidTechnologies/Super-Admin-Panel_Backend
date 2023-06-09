@@ -1,5 +1,4 @@
 
-
 const LeaveManagementProfile = require("../models/leaveManagementProfile");
 
 exports.createLeaveManagementProfile = (req, res, next) => {
