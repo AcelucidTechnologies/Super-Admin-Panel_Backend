@@ -100,6 +100,12 @@ const permissionSchema = new Schema(
             edit:{ type:Boolean},
             view: { type: Boolean },
             delete: { type: Boolean }
+        },
+        leaveTracker:{
+            add:{ type:Boolean},
+            edit:{ type:Boolean},
+            view: { type: Boolean },
+            delete: { type: Boolean }
         }
     },
     {

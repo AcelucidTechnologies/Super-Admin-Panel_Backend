@@ -173,7 +173,14 @@ const {
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
 const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile } = require("../controllers/leaveManagementProfile");
-const leaveManagementProfile = require("../models/leaveManagementProfile");
+const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById } = require("../controllers/leaveTracker");
+const { getTotalLeaves } = require("../controllers/totalLeaves");
+const { createLeaveAssets, getLeaveAssets, getLeaveAssetsById, deleteLeaveAssets, updateLeaveAssets } = require("../controllers/leaveManagementAssets");
+const { createDesignation, getDesignation } = require("../controllers/designation");
+const { createDepartment, getDepartment } = require("../controllers/department");
+const { createSourceHiring, getSourceHiring } = require("../controllers/sourceHiring");
+const { createReporting, getReporting } = require("../controllers/reporting");
+const { getCalender } = require("../controllers/leaveCalender");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -874,5 +881,127 @@ router.post(
   );
 
 
+  // leave tracker module
+  router.get(
+    "/getLeaveTracker",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getLeaveTracker
+  );
+  router.get(
+    "/getLeaveTrackerById",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getLeaveTrackerById
+  );
+  router.delete(
+    "/deleteLeaveTracker",
+    rolehandler.grantAccess("deleteOwn", "profile"),
+    deleteLeaveTracker
+  );
+  router.post(
+    "/createLeaveTracker",
+    rolehandler.grantAccess("readOwn", "profile"),
+    uploadLeave,
+    createLeaveTracker
+  );
+  
+
+  // Assets Apis
+
+  router.post(
+    "/createLeaveAssets",
+    rolehandler.grantAccess("readOwn", "profile"),
+    createLeaveAssets
+  );
+  router.get(
+    "/getLeaveAssets",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getLeaveAssets
+  );
+  router.get(
+    "/getLeaveAssetsById",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getLeaveAssetsById
+  );
+  router.delete(
+    "/deleteLeaveAssets",
+    rolehandler.grantAccess("deleteOwn", "profile"),
+    deleteLeaveAssets
+  );
+  router.put(
+    "/updateLeaveAssets",
+    rolehandler.grantAccess("updateOwn", "profile"),
+    updateLeaveAssets
+  );
 
 
+  // total Leave 
+  router.get(
+    "/getTotalLeaves",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getTotalLeaves
+  );
+// designation
+
+router.post(
+  "/createDesignation",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createDesignation
+);
+
+router.get(
+  "/getDesignation",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getDesignation
+);
+
+//department
+
+router.post(
+  "/createDepartment",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createDepartment
+);
+
+router.get(
+  "/getDepartment",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getDepartment
+);
+
+// source Hiring
+
+
+router.post(
+  "/createSourceHiring",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createSourceHiring
+);
+
+router.get(
+  "/getSourceHiring",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getSourceHiring
+);
+
+// reporting 
+
+router.post(
+  "/createReporting",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createReporting
+);
+
+router.get(
+  "/getReporting",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getReporting
+);
+
+
+// calender Apis
+
+router.get(
+  "/getCalenderLeaves",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getCalender
+);
