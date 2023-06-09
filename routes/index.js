@@ -172,7 +172,7 @@ const {
   getReviewerListById,
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
-const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById } = require("../controllers/leaveManagementProfile");
+const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile } = require("../controllers/leaveManagementProfile");
 const leaveManagementProfile = require("../models/leaveManagementProfile");
 // const storage = multer.diskStorage(
 //   {
@@ -870,7 +870,7 @@ router.post(
   router.put(
     "/updateLeaveProfile",
     rolehandler.grantAccess("updateOwn", "profile"),
-    leaveManagementProfile
+    updateLeaveProfile
   );
 
 

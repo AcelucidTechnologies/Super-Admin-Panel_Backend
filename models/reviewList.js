@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 
 const reviewListSchema = Schema({
   username: { type: String },
-  reviewSubject: { type: String, required: true},
-  publishingSiteUrl: { type: String, required: true },
+  reviewSubject: { type: String,},
+  publishingSiteUrl: { type: String,},
   ratingCountReview: { type: Number, default: 0},
-  status: { type: String,required: true },
+  status: { type: String,},
 },
 );
 
