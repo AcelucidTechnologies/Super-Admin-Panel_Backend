@@ -14,6 +14,7 @@ const leaveProfileSchema = new Schema(
     email: { type: String },
     department: { type: String },
     role: { type: String },
+    image: {type: String},
     designation: { type: String },
     employmentType: { type: String },
     location: { type: String },
@@ -23,6 +24,14 @@ const leaveProfileSchema = new Schema(
     currentExp: { type: String },
     totalExp: { type: String },
     reportingManager: { type: String },
+    systemFields: {
+      addedBy: { type: String },
+      
+      addedTime: { type: String },
+      modifiedBy: { type: String },
+      modifiedTime: { type: String },
+      onBoardingStatus: { type: String },
+    },
     personalDetails: {
       dateOfBirth: { type: String },
       expertise: { type: String },
@@ -57,17 +66,12 @@ const leaveProfileSchema = new Schema(
         pincode: { type: String },
       },
     },
+
     separationOfDate: { type: String },
-    systemFields: {
-      addedBy: { type: String },
-      addedTime: { type: String },
-      modifiedBy: { type: String },
-      modifiedTime: { type: String },
-      onBoardingStatus: { type: String },
-    },
     workExperience: [
       {
         companyName: { type: String },
+
         jobTitle: { type: String },
         fromDate: { type: String },
         toDate: { type: String },
@@ -76,6 +80,7 @@ const leaveProfileSchema = new Schema(
       },
     ],
     educationDetails: [
+
       {
         instituteName: { type: String },
         degree: { type: String },

@@ -172,7 +172,7 @@ const {
   getReviewerListById,
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
-const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile } = require("../controllers/leaveManagementProfile");
+const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile } = require("../controllers/leaveManagementProfile");
 const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById } = require("../controllers/leaveTracker");
 const { getTotalLeaves } = require("../controllers/totalLeaves");
 const { createLeaveAssets, getLeaveAssets, getLeaveAssetsById, deleteLeaveAssets, updateLeaveAssets } = require("../controllers/leaveManagementAssets");
@@ -866,6 +866,7 @@ router.post(
   );
    router.post(
     "/createLeaveProfile",
+    uploadProfile,
     rolehandler.grantAccess("readOwn", "profile"),
     createLeaveManagementProfile
   );
