@@ -15,26 +15,24 @@ const leaveProfileSchema = new Schema(
     department: { type: String },
     role: { type: String },
     image: {type: String},
-    
     designation: { type: String },
     employmentType: { type: String },
     location: { type: String },
     employeeStatus: { type: String },
     sourceHiring: { type: String },
-    dateOfJoining: { type: String },
+    dateOfJoining: { type: Date },
     currentExp: { type: String },
     totalExp: { type: String },
     reportingManager: { type: String },
     systemFields: {
       addedBy: { type: String },
-      
-      addedTime: { type: String },
+      addedTime: { type: Date },
       modifiedBy: { type: String },
-      modifiedTime: { type: String },
+      modifiedTime: { type: Date },
       onBoardingStatus: { type: String },
     },
     personalDetails: {
-      dateOfBirth: { type: String },
+      dateOfBirth: { type: Date },
       expertise: { type: String },
       age: { type: Number },
       gender: { type: String },
@@ -72,10 +70,9 @@ const leaveProfileSchema = new Schema(
     workExperience: [
       {
         companyName: { type: String },
-
         jobTitle: { type: String },
-        fromDate: { type: String },
-        toDate: { type: String },
+        fromDate: { type: Date },
+        toDate: { type: Date },
         jobDescription: { type: String },
         releventExp: { type: String },
       },
@@ -86,8 +83,8 @@ const leaveProfileSchema = new Schema(
         instituteName: { type: String },
         degree: { type: String },
         specialization: { type: String },
-        toDate: { type: String },
-        dateOfCompletion: { type: String },
+        toDate: { type: Date },
+        dateOfCompletion: { type: Date },
       },
     ],
   },
@@ -113,5 +110,17 @@ let sequentialNumber = 0;
 
 function generateSequentialNumber() {
   return ++sequentialNumber;
+}
+
+function formatDate(date) {
+  var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [day, month, year].join('-');
 }
 module.exports = mongoose.model("leaveManagementProfile", leaveProfileSchema);

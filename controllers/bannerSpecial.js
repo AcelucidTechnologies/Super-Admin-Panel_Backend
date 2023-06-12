@@ -38,7 +38,6 @@ exports.getBannerSpecial = (req, res, next) => {
       if(item.image)
       item.image = process.env.bucket_path +"Banner/" + item.image;
     });
-    
       res.status(200).json(response);
     })
     .catch((err) => {
@@ -87,7 +86,6 @@ exports.createBannerSpecial = (req, res, next) => {
 };
 
 // For Update Api 
-
 exports.updateBannerSpecial = (req, res, next) => {
   let Id;
   req.query.id ? (Id = req.query.id) : next();
