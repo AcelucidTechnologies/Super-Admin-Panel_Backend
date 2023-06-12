@@ -16,6 +16,7 @@ exports.createDepartment= (req,res,next)=>{
                 error: "Department name is already exits"
             })
         }
+        
     }).catch((res)=>{
         res.status(500).json({
             error: "Something went wrong"
@@ -29,6 +30,7 @@ exports.getDepartment=(req,res,next)=>{
       .then((response) => {
         if (response) {
           res.status(200).send(response);
+          console.log("12345",response)
         }
       })
       .catch((err) => {
