@@ -15,6 +15,7 @@ const leaveProfileSchema = new Schema(
     department: { type: String },
     role: { type: String },
     image: {type: String},
+    
     designation: { type: String },
     employmentType: { type: String },
     location: { type: String },
