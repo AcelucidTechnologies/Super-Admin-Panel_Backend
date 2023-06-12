@@ -877,6 +877,7 @@ router.post(
   );
   router.put(
     "/updateLeaveProfile",
+    uploadProfile,
     rolehandler.grantAccess("updateOwn", "profile"),
     updateLeaveProfile
   );
