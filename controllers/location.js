@@ -1,18 +1,19 @@
-const SourceHiring= require("../models/sourceHiring");
+const Location= require("../models/location");
 
-exports.createSourceHiring= (req,res,next)=>{
-    let data = new SourceHiring({
+exports.createLocation= (req,res,next)=>{
+    let data = new Location({
         username: req.body.username,
-        sourceHiring: req.body.sourceHiring
+        location: req.body.location
     })
-    SourceHiring.findOne({sourceHiring: data.sourceHiring,username: data.username}).then((response)=>{
+
+    Location.findOne({location: data.location,username: data.username}).then((response)=>{
         if(!response){
             data.save().then((result)=>{
                 res.status(200).json(result)
             })
         }else{
             res.status(208).json({
-                error: "Source Hiring name is already exits"
+                error: "Location name is already exits"
             })
         }
     }).catch((res)=>{
@@ -22,13 +23,12 @@ exports.createSourceHiring= (req,res,next)=>{
     })
 }
 
-
-exports.getSourceHiring=(req,res,next)=>{
+exports.getLocation=(req,res,next)=>{
     let { username } = req.query;
-    SourceHiring.find({ username: username })
+    Location.find({ username: username })
       .then((response) => {
         if (response) {
-          console.log("data",response)
+            console.log(response)
           res.status(200).send(response);
         }
       })

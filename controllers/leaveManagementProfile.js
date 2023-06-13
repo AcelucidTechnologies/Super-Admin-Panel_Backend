@@ -53,7 +53,7 @@ exports.createLeaveManagementProfile = (req, res, next) => {
     workExperience: req.body.workExperience,
     educationDetails: req.body.educationDetails,
     personalDetails: req.body.personalDetails,
-    identityInformation: req.body.contactDetails,
+    identityInformation: req.body.identityInformation,
     contactDetails: req.body.contactDetails,
     separationOfDate: req.body.separationOfDate,
     systemFields: req.body.systemFields,
