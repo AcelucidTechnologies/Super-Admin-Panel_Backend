@@ -181,6 +181,9 @@ const { createDepartment, getDepartment } = require("../controllers/department")
 const { createSourceHiring, getSourceHiring } = require("../controllers/sourceHiring");
 const { createReporting, getReporting } = require("../controllers/reporting");
 const { getCalender } = require("../controllers/leaveCalender");
+const { createExitDetails, getExitDetails, getExitDetailsById, deleteExitDetails, updateExitDetails } = require("../controllers/exitDetails");
+const { createLocation, getLocation } = require("../controllers/location");
+const { createReimbursement, getReimbursement, getReimbursementById, deleteReimbursement, updateReimbursement } = require("../controllers/travelExpense");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -999,6 +1002,19 @@ router.get(
   getReporting
 );
 
+// location
+
+router.post(
+  "/createLocation",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createLocation
+);
+
+router.get(
+  "/getLocation",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getLocation
+);
 
 // calender Apis
 
@@ -1006,4 +1022,63 @@ router.get(
   "/getCalenderLeaves",
   rolehandler.grantAccess("readOwn", "profile"),
   getCalender
+);
+
+
+// Exit details
+
+
+router.post(
+  "/createExitDetails",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createExitDetails
+);
+router.get(
+  "/getExitDetails",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getExitDetails
+);
+router.get(
+  "/getExitDetailsById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getExitDetailsById
+);
+router.delete(
+  "/deleteExitDetails",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteExitDetails
+);
+router.put(
+  "/updateExitDetails",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateExitDetails
+);
+
+
+// Reimbursement
+
+router.post(
+  "/createReimbursement",
+  rolehandler.grantAccess("readOwn", "profile"),
+  createReimbursement
+);
+router.get(
+  "/getReimbursement",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getReimbursement
+);
+router.get(
+  "/getReimbursementById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getReimbursementById
+);
+router.delete(
+  "/deleteReimbursement",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteReimbursement
+);
+router.put(
+  "/updateReimbursement",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateReimbursement
 );
