@@ -11,6 +11,5 @@ exports.roles = (function () {
     .updateAny("profile")
     .deleteAny("profile")
     .createAny("profile");
-
   return ac;
 })();
