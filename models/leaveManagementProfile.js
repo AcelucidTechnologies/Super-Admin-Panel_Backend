@@ -56,6 +56,7 @@ const leaveProfileSchema = new Schema(
         city: { type: String },
         pincode: { type: String },
       },
+      sameAsLocal: {type: String},
       permanentAddress: {
         address1: { type: String },
         address2: { type: String },
