@@ -2,7 +2,7 @@ const RatingCriteria = require("../models/ratingCriteria");
 
 exports.getRatingCriteria=(req,res,next)=>{
   let { username } = req.query;
-  RatingCriteria.find({username: username}).then((response)=>{
+  RatingCriteria.find({username: username}).sort({ _id: -1 }).then((response)=>{
       if(response[0]){
           res.status(200).json(response)
       }else{

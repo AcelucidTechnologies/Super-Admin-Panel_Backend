@@ -194,7 +194,6 @@ exports.updateProduct = (req, res, next) => {
   });
 };
 
-
 exports.deleteProduct=(req,res,next)=>{
   let  Id
   (req.query.id)?Id = req.query.id:next()

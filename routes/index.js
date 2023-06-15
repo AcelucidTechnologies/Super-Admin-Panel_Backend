@@ -172,8 +172,8 @@ const {
   getReviewerListById,
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
-const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile } = require("../controllers/leaveManagementProfile");
-const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById } = require("../controllers/leaveTracker");
+const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile, getTeamData } = require("../controllers/leaveManagementProfile");
+const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById, approved, disapprove } = require("../controllers/leaveTracker");
 const { getTotalLeaves } = require("../controllers/totalLeaves");
 const { createLeaveAssets, getLeaveAssets, getLeaveAssetsById, deleteLeaveAssets, updateLeaveAssets } = require("../controllers/leaveManagementAssets");
 const { createDesignation, getDesignation } = require("../controllers/designation");
@@ -184,6 +184,8 @@ const { getCalender } = require("../controllers/leaveCalender");
 const { createExitDetails, getExitDetails, getExitDetailsById, deleteExitDetails, updateExitDetails } = require("../controllers/exitDetails");
 const { createLocation, getLocation } = require("../controllers/location");
 const { createReimbursement, getReimbursement, getReimbursementById, deleteReimbursement, updateReimbursement } = require("../controllers/travelExpense");
+const { createDocument, uploadDocument, getDocument, getDocuemntById, deleteDocument, updateDocument } = require("../controllers/document");
+const { sendMail } = require("../controllers/sendGridMail");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -934,10 +936,19 @@ router.post(
   );
   router.put(
     "/updateLeaveAssets",
-    rolehandler.grantAccess("updateOwn", "profile"),
     updateLeaveAssets
   );
 
+  router.get(
+    "/approved",
+    approved
+  );
+
+  router.get(
+    "/disApproved",
+    rolehandler.grantAccess("updateOwn", "profile"),
+    disapprove
+  );
 
   // total Leave 
   router.get(
@@ -945,6 +956,7 @@ router.post(
     rolehandler.grantAccess("readOwn", "profile"),
     getTotalLeaves
   );
+
 // designation
 
 router.post(
@@ -1081,4 +1093,44 @@ router.put(
   "/updateReimbursement",
   rolehandler.grantAccess("updateOwn", "profile"),
   updateReimbursement
+);
+
+// Document
+
+router.post(
+  "/createDocument",
+  uploadDocument,
+  rolehandler.grantAccess("readOwn", "profile"),
+  createDocument
+);
+
+router.get(
+  "/getDocument",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getDocument
+);
+router.get(
+  "/getDocuemntById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getDocuemntById
+);
+router.delete(
+  "/deleteDocument",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteDocument
+);
+router.put(
+  "/updateDocument",
+  uploadDocument,
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateDocument
+);
+
+
+// team Api
+
+router.get(
+  "/getTeamData",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getTeamData
 );

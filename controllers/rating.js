@@ -5,7 +5,7 @@ const ReviewList = require("../models/reviewList");
 
 exports.getRating = (req, res, next) => {
   let { username } = req.query;
-  Rating.find({ username: username })
+  Rating.find({ username: username }).sort({ createdAt: -1 })
     .then((response) => {
       if (response[0]) {
         res.status(200).json(response);

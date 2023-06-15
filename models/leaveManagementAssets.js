@@ -23,12 +23,9 @@ const AssetsSchema = new Schema(
 
 function generateEmployeeId() {
   const currentYear = new Date().getMilliseconds().toString().substr(-2);
-  console.log("new date", currentYear);
   const paddedSequentialNumber = generateSequentialNumber()
     .toString()
     .padStart(4, "0");
-  console.log("123", generateSequentialNumber());
-  console.log("paddedSequentialNumber", paddedSequentialNumber);
   return `EP-${currentYear}-${paddedSequentialNumber}`;
 }
 

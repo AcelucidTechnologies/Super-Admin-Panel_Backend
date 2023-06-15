@@ -31,7 +31,7 @@ exports.createReviewerList = (req, res, next) => {
 
 exports.getReviewerList = (req, res, next) => {
   let { username } = req.query;
-  ReviewerList.find({ username: username })
+  ReviewerList.find({ username: username }).sort({ firstRating: -1 })
     .then((response) => {
       if (response) {
         res.status(200).json(response);
