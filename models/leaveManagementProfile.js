@@ -44,6 +44,7 @@ const leaveProfileSchema = new Schema(
       panNumber: { type: String },
       aadharNumber: { type: Number },
     },
+
     contactDetails: {
       workingPhoneNumber: { type: Number },
       personalMobileNumber: { type: Number },
@@ -66,7 +67,6 @@ const leaveProfileSchema = new Schema(
         pincode: { type: String },
       },
     },
-
     separationOfDate: { type: String },
     workExperience: [
       {
@@ -79,7 +79,6 @@ const leaveProfileSchema = new Schema(
       },
     ],
     educationDetails: [
-
       {
         instituteName: { type: String },
         degree: { type: String },
@@ -98,12 +97,9 @@ const leaveProfileSchema = new Schema(
 
 function generateEmployeeId() {
   const currentYear = new Date().getMilliseconds().toString().substr(-2);
-  console.log("new date", currentYear);
   const paddedSequentialNumber = generateSequentialNumber()
     .toString()
     .padStart(4, "0");
-  console.log("123", generateSequentialNumber());
-  console.log("paddedSequentialNumber", paddedSequentialNumber);
   return `EMP-${currentYear}-${paddedSequentialNumber}`;
 }
 

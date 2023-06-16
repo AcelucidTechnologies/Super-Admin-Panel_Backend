@@ -41,7 +41,7 @@ exports.createReviewList = (req, res, next) => {
 
 exports.getAllReviewList = (req, res, next) => {
   let { username } = req.query;
-  ReviewList.find({ username: username })
+  ReviewList.find({ username: username }).sort({ _id: -1 })
     .then((response) => {
       if (response) {
         console.log("234",response)

@@ -70,8 +70,6 @@ exports.createLeaveAssets = (req, res, next) => {
           });
       };
       
-      
-      
       exports.getLeaveAssetsById = (req, res, next) => {
         let Id;
         if (req.query.id) {
@@ -93,7 +91,7 @@ exports.createLeaveAssets = (req, res, next) => {
           .catch((err) => {
             res.status(500).json({
               errors: [
-                { error: "Something went wrong" },
+                { error: "Something Went Wrong" },
               ],
             });
             console.log(err);
@@ -108,7 +106,6 @@ exports.createLeaveAssets = (req, res, next) => {
           return next();
         }
         let Data = req.body;
-        console.log(Data,"Data")
         LeaveAssets.findByIdAndUpdate(Id, Data, { new: true })
           .then((response) => {
             if (response) {
@@ -123,7 +120,7 @@ exports.createLeaveAssets = (req, res, next) => {
           .catch((err) => {
             res.status(500).json({
               errors: [
-                { error: `Something went wrong ${err}` },
+                { error: "Something went wrong" },
               ],
             });
           });

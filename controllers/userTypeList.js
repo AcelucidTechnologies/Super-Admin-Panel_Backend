@@ -3,7 +3,7 @@ const UserTypeList = require("../models/usertypeList");
 
 exports.getUserTypeList=(req,res,next)=>{
     let { username } = req.query;
-    UserTypeList.find({username: username}).then((response)=>{
+    UserTypeList.find({username: username}).sort({ _id: -1 }).then((response)=>{
         if(response[0]){
             res.status(200).json(response)
         }else{

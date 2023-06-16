@@ -8,7 +8,7 @@ const totalLeaveSchema= new Schema({
     sickLeave: {type: Number, default: "8"},
     workFromHome: {type: Number , default: "5"},
     compOff: {type: Number , default: "5"},
-    casualLeave: {type: Number, default: "10"},
+    casualLeave: {type: Number, default: "50"},
 },
 {
     timestamps: true,
