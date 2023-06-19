@@ -149,7 +149,6 @@ exports.updateProduct = (req, res, next) => {
   let Data = JSON.parse(req.body.Data);
   let resultdata = "";
   let resultvideodata = "";
-  console.log(Data);
   let check = new Promise((resolve, reject) => {
     if (
       Object.keys(Data).includes("videos") &&
@@ -188,7 +187,6 @@ exports.updateProduct = (req, res, next) => {
           res.status(500).json({
             errors: [{ error: "Something went wrong" }],
           });
-          console.log(err);
         });
     }
   });
@@ -201,7 +199,6 @@ exports.deleteProduct=(req,res,next)=>{
     .then((response) => {
       if (response) {
         bucket.imageDelete(response.image).then((returned)=>{
-         console.log(returned);
          if (returned) res.status(200).send(response);
         })
       }
@@ -210,7 +207,6 @@ exports.deleteProduct=(req,res,next)=>{
       res.status(500).json({
         errors: [{ error: "Something went wrong" }],
       });
-      console.log(err);
     });
 }
 

@@ -238,6 +238,7 @@ exports.deleteLeaveTracker = (req, res, next) => {
       });
   };
 
+
   exports.createLeaveTracker = async (req, res, next) => {
     try {
       const { username, leaveType, appliedTo, fromDate, toDate, contactNo, altContactNo, reason } = req.body;
@@ -251,7 +252,7 @@ exports.deleteLeaveTracker = (req, res, next) => {
       }
   
       const oneDay = 24 * 60 * 60 * 1000;
-      const numberOfDays = Math.ceil((endDate - startDate + oneDay) / oneDay); // Add oneDay to include the last day
+      const numberOfDays = Math.ceil((endDate - startDate + oneDay) / oneDay);
   
       if (numberOfDays <= 0) {
         return res.status(400).json({
@@ -289,14 +290,14 @@ exports.deleteLeaveTracker = (req, res, next) => {
       // Send email notification with SendGrid
       const emailContent = `
         <p>Dear ${username},</p>
+        <p>${reason}<p>
         <p>Your leave request is pending approval. Please click the button below to approve or disapprove:</p>
-        <a href="http://localhost:4200">please click on this link</a>
+        <a href="http://localhost:4200">Click here to approve</a>
       `;
-      
       const msg = {
         to: 'himanshu.aswal@acelucid.com',
         from: 'shivam.rawat@acelucid.com',
-        subject: 'LeaveTracker Approval',
+        subject: 'Leave Approval',
         html: emailContent,
       };
   
@@ -307,30 +308,43 @@ exports.deleteLeaveTracker = (req, res, next) => {
     } catch (err) {
       console.error(err);
       res.status(500).json({
-        error: "Something went wrong while saving the leave tracker.",
+        error: "Something went wrong while saving the leave.",
       });
     }
   };
-
-  exports.approved = async (req, res, next) => {
+  
+  exports.approve = async (req, res, next) => {
     try {
-      const leaveTracker = await LeaveTracker.findOneAndUpdate(
-        { uniqueIdentifier: req.query.id },
-        { status: 'Approved' },
-        { new: true }
-      );
+      const leaveTrackerId = req.query.id;
   
-      let totalLeave = await TotalLeave.findOne({ username: leaveTracker.username });
-      totalLeave[leaveTracker.leaveType] -= leaveTracker.numberOfDays;
-      totalLeave = await totalLeave.save();
+      // Find the leaveTracker document by ID
+      const leaveTracker = await LeaveTracker.findById(leaveTrackerId);
   
+      if (!leaveTracker) {
+        return res.status(400).send("Leave tracker not found.");
+      }
+  
+      // Update LeaveTracker document
+      leaveTracker.status = 'approved';
+      await leaveTracker.save();
+  
+      // Update TotalLeave document
+      const totalLeave = await TotalLeave.findOne({ username: leaveTracker.username });
+      if (!totalLeave) {
+        return res.status(400).send("Total leave count not found for the user.");
+      }
+  
+      const numberOfDays = Math.ceil((leaveTracker.toDate - leaveTracker.fromDate + 24 * 60 * 60 * 1000) / (24 * 60 * 60 * 1000));
+      totalLeave[leaveTracker.leaveType] -= numberOfDays;
+      await totalLeave.save();
+
       res.status(200).send('Leave request approved successfully.');
     } catch (err) {
       console.error(err);
       res.status(500).send('An error occurred while approving the leave request.');
     }
   };
-
+  
   exports.disapprove=(req,res,next)=>{
       const leaveTracker =LeaveTracker.findOneAndUpdate(
         { uniqueIdentifier: req.query.username },
@@ -339,3 +353,61 @@ exports.deleteLeaveTracker = (req, res, next) => {
       );
       res.status(200).send('Leave request disapproved successfully.');
   };
+
+
+
+
+  //34567890-
+
+
+
+  // exports.getLeaveDetails = async (req, res, next) => {
+  //   try {
+  //     const username = req.query.username;
+  //     const leaveDetails = await LeaveTracker.aggregate([
+  //       {
+  //         $match: { username: username }
+  //       },
+  //       {
+  //         $lookup: {
+  //           from: 'totalleaves',
+  //           localField: 'username',
+  //           foreignField: 'username',
+  //           as: 'totalLeave'
+  //         }
+  //       },
+  //       {
+  //         $unwind: '$totalLeave'
+  //       },
+  //       {
+  //         $project: {
+  //           _id: 1,
+  //           username: 1,
+  //           leaveType: 1,
+  //           fromDate: 1,
+  //           toDate: 1,
+  //           reason: 1,
+  //           status: 1,
+  //           totalLeaves: {
+  //             earned: '$totalLeave.earned',
+  //             leaveWithoutpay: '$totalLeave.leaveWithoutpay',
+  //             sickLeave: '$totalLeave.sickLeave',
+  //             workFromHome: '$totalLeave.workFromHome',
+  //             compOff: '$totalLeave.compOff',
+  //             casualLeave: '$totalLeave.casualLeave'
+  //           }
+  //         }
+  //       }
+  //     ]);
+  
+  //     if (leaveDetails.length === 0) {
+  //       return res.status(404).send('Leave details not found.');
+  //     }
+  
+  //     res.status(200).json(leaveDetails);
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.status(500).send('An error occurred while fetching leave details.');
+  //   }
+  // };
+  
