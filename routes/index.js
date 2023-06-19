@@ -54,6 +54,7 @@ const {
   updateOrder,
   deleteOrder,
   createOrder,
+  getOrderById,
 } = require("../controllers/order");
 const {
   getAllShipmentDetails,
@@ -173,7 +174,7 @@ const {
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
 const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile, getTeamData } = require("../controllers/leaveManagementProfile");
-const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById, approved, disapprove } = require("../controllers/leaveTracker");
+const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById, approve, disapprove,} = require("../controllers/leaveTracker");
 const { getTotalLeaves } = require("../controllers/totalLeaves");
 const { createLeaveAssets, getLeaveAssets, getLeaveAssetsById, deleteLeaveAssets, updateLeaveAssets } = require("../controllers/leaveManagementAssets");
 const { createDesignation, getDesignation } = require("../controllers/designation");
@@ -186,6 +187,7 @@ const { createLocation, getLocation } = require("../controllers/location");
 const { createReimbursement, getReimbursement, getReimbursementById, deleteReimbursement, updateReimbursement } = require("../controllers/travelExpense");
 const { createDocument, uploadDocument, getDocument, getDocuemntById, deleteDocument, updateDocument } = require("../controllers/document");
 const { sendMail } = require("../controllers/sendGridMail");
+const { createCustomerDetails, uploadOrder, getCustomerDetails } = require("../controllers/customerDetails");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -376,31 +378,7 @@ router.delete(
   deleteProduct
 );
 
-//order table api
 
-router.get("/orders", rolehandler.grantAccess("readOwn", "profile"), getOrder);
-router.get(
-  "/orders",
-  rolehandler.grantAccess("readOwn", "profile"),
-  getAllOrders
-);
-router.post(
-  "/orders",
-  rolehandler.grantAccess("updateOwn", "profile"),
-  upload2.none(),
-  createOrder
-);
-router.put(
-  "/orders",
-  rolehandler.grantAccess("updateOwn", "profile"),
-  upload2.none(),
-  updateOrder
-);
-router.delete(
-  "/orders",
-  rolehandler.grantAccess("deleteOwn", "profile"),
-  deleteOrder
-);
 
 //shipment table api
 
@@ -939,16 +917,24 @@ router.post(
     updateLeaveAssets
   );
 
-  router.get(
-    "/approved",
-    approved
+  router.put(
+    "/approve",
+    rolehandler.grantAccess("updateOwn", "profile"),
+    approve
   );
 
-  router.get(
+  router.put(
     "/disApproved",
     rolehandler.grantAccess("updateOwn", "profile"),
     disapprove
   );
+
+  // router.get(
+  //   "/getLeaveDetails",
+  //   rolehandler.grantAccess("updateOwn", "profile"),
+  //   getLeaveDetails
+  // );
+
 
   // total Leave 
   router.get(
@@ -1133,4 +1119,50 @@ router.get(
   "/getTeamData",
   rolehandler.grantAccess("readOwn", "profile"),
   getTeamData
+);
+
+
+//order table api
+
+router.get("/orders", rolehandler.grantAccess("readOwn", "profile"), getOrder);
+router.get(
+  "/getOrders",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAllOrders
+);
+router.post(
+  "/createOrders",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  createOrder
+);
+router.put(
+  "/updateOrders",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateOrder
+);
+router.delete(
+  "/deleteOrders",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteOrder
+);
+
+router.get(
+  "/getOrderById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getOrderById
+);
+
+// Customer details Api
+
+router.post(
+  "/createCustomerDetails",
+  uploadOrder,
+  rolehandler.grantAccess("updateOwn", "profile"),
+  createCustomerDetails
+);
+
+router.get(
+  "/getCustomerDetails",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getCustomerDetails
 );
