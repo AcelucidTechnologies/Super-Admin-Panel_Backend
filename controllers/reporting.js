@@ -38,6 +38,5 @@ exports.getReporting=(req,res,next)=>{
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
 }

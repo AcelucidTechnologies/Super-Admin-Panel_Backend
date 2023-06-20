@@ -62,7 +62,7 @@ const leaveProfileSchema = new Schema(
         address1: { type: String },
         address2: { type: String },
         country: { type: String },
-        state: { type: String },
+        State: { type: String },
         city: { type: String },
         pincode: { type: String },
       },

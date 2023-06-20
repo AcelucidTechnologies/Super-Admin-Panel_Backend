@@ -26,11 +26,10 @@ exports.createDepartment= (req,res,next)=>{
 
 exports.getDepartment=(req,res,next)=>{
     let { username } = req.query;
-    Department.find({ username: username })
+    Department.find({ username: username }).select({ department: 1,_id: 0 })
       .then((response) => {
         if (response) {
           res.status(200).send(response);
-          console.log("12345",response)
         }
       })
       .catch((err) => {
@@ -39,6 +38,5 @@ exports.getDepartment=(req,res,next)=>{
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
 }

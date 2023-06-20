@@ -42,13 +42,11 @@ exports.createFeatureProduct = (req, res, next) => {
     image: req.file.originalname,
     isSpecialProduct: req.body.isSpecialProduct
   });
-  console.log("44", Data);
   FeatureProduct.findOne({
     username: Data.username,
   })
     .then((response) => {
       if (!response) {
-        console.log("46");
         Data.save().then((result) => {
           res.json(req.file);
         });
@@ -77,12 +75,10 @@ exports.createFeatureProduct = (req, res, next) => {
 
 exports.getFeatureProduct = (req, res, next) => {
   let { username } = req.query;
-  console.log("username", username);
 
   FeatureProduct.find({ username: username })
     .then((response) => {
       if (response[0]) {
-        console.log(response);
         res.status(200).json(response);
       } else {
         res.status(404).json({
@@ -166,7 +162,6 @@ exports.getSpeciaProduct = (req, res, next) => {
           response,
         });
       } else {
-        console.log("168");
         res.status(404).json({
           error: "Not a special product",
         });
@@ -210,6 +205,5 @@ exports.getFeatureProductById = (req, res, next) => {
       res.status(500).json({
         errors: [{ error: "Something went wrong while fetching a Feature Product detail" }],
       });
-      console.log(err);
     });
 };

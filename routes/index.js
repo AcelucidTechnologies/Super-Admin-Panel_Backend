@@ -188,6 +188,7 @@ const { createReimbursement, getReimbursement, getReimbursementById, deleteReimb
 const { createDocument, uploadDocument, getDocument, getDocuemntById, deleteDocument, updateDocument } = require("../controllers/document");
 const { sendMail } = require("../controllers/sendGridMail");
 const { createCustomerDetails, uploadOrder, getCustomerDetails } = require("../controllers/customerDetails");
+const { CreateOrder } = require("../controllers/createOrder");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -1165,4 +1166,12 @@ router.get(
   "/getCustomerDetails",
   rolehandler.grantAccess("readOwn", "profile"),
   getCustomerDetails
+);
+
+       // create order Mobile Number
+
+router.post(
+  "/createOrder",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  CreateOrder
 );

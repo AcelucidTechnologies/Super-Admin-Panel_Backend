@@ -115,7 +115,6 @@ exports.createProduct = (req, res, next) => {
     status: req.body.status,
     image: req.file.originalname,
   });
-  console.log(data);
   Product.findOne({ productName: data.productName, username: data.username })
     .then((response) => {
       if (!response) {

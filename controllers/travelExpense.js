@@ -30,7 +30,6 @@ exports.getReimbursement=(req,res,next)=>{
     Reimbursement.find({ username: username })
       .then((response) => {
         if (response) {
-          console.log("data",response)
           res.status(200).send(response);
         }
       })
@@ -40,7 +39,6 @@ exports.getReimbursement=(req,res,next)=>{
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
 }
 
@@ -125,6 +123,5 @@ exports.deleteReimbursement = (req, res, next) => {
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
   };

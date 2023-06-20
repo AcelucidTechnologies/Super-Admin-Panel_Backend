@@ -14,6 +14,5 @@ exports.getTotalLeaves=(req,res,next)=>{
             { error: "Something went wrong while fetching Total Leaves details" },
           ],
         });
-        console.log(err);
       });
 }

@@ -5,7 +5,6 @@ let data= new LiveChat({
     username: req.body.username,
     propertyId: req.body.propertyId
 })
-console.log(req.body.propertyId)
 data.save().then((response)=>{
     if(response){
         res.status(200).json(response)

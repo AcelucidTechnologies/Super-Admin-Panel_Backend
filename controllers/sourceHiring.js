@@ -22,13 +22,11 @@ exports.createSourceHiring= (req,res,next)=>{
     })
 }
 
-
 exports.getSourceHiring=(req,res,next)=>{
     let { username } = req.query;
     SourceHiring.find({ username: username })
       .then((response) => {
         if (response) {
-          console.log("data",response)
           res.status(200).send(response);
         }
       })

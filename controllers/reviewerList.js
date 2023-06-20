@@ -108,6 +108,5 @@ exports.deleteReviewerList = (req, res, next) => {
         res.status(500).json({
           errors: [{ error: "Something went wrong while fetching a Reviewer List detail" }],
         });
-        console.log(err);
       });
   };

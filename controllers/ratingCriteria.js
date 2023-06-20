@@ -85,7 +85,6 @@ exports.deleteRatingCriteria = (req, res, next) => {
           { error: "Something went wrong while deleting Rating Criteria" },
         ],
       });
-      console.log(err);
     });
 };
 
@@ -103,6 +102,5 @@ exports.getRatingCriteriaById = (req, res, next) => {
       res.status(500).json({
         errors: [{ error: "Something went wrong while fetching a Rating Criteria detail" }],
       });
-      console.log(err);
     });
 };
