@@ -14,7 +14,6 @@ mongoose.connect("mongodb://localhost/pdf-api", {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => {
-  console.log("Connected to MongoDB");
 });
 
 // Define a Mongoose schema for your PDF documents
@@ -27,7 +26,6 @@ const Pdf = mongoose.model("Pdf", pdfSchema);
 exports.CreatePdf = (req,res) => {
   Pdf.findById(req.params.id, (err, pdf) => {
     if (err) {
-      console.error(err);
       return res.status(500).send("Internal Server Error");
     }
 

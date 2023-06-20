@@ -13,7 +13,10 @@ const CustomerSchema = new Schema(
     address: { type: String },
     department: { type: String },
     paymentMode: { type: String },
+    amount: {type: Number},
+    discount: {type: Number},
     image: { type: String },
+    totalAmount: {type: Number}
   },
   {
     timestamps: true,

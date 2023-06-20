@@ -1,6 +1,5 @@
 const ParentCategory = require("../models/parentCategory");
 exports.getAllParentCategory = (req, res, next) => {
-  console.log("get all parent category ")
   ParentCategory.find()
     .then((response) => {
       if (response) {
@@ -11,7 +10,6 @@ exports.getAllParentCategory = (req, res, next) => {
       res.status(500).json({
         errors: [{ error: "Something went wrong" }],
       });
-      console.log(err);
     });
 };
 

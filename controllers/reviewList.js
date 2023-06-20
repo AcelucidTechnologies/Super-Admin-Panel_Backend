@@ -44,7 +44,6 @@ exports.getAllReviewList = (req, res, next) => {
   ReviewList.find({ username: username }).sort({ _id: -1 })
     .then((response) => {
       if (response) {
-        console.log("234",response)
         res.status(200).json(response);
       } else {
         res.status(404).json({
@@ -116,6 +115,5 @@ exports.deleteReviewList = (req, res, next) => {
         res.status(500).json({
           errors: [{ error: "Something went wrong while fetching a Rating Review detail" }],
         });
-        console.log(err);
       });
   };

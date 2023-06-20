@@ -36,7 +36,6 @@ exports.createLeaveAssets = (req, res, next) => {
                 { error: "Something went wrong" },
               ],
             });
-            console.log(err);
           });
     }
 
@@ -66,7 +65,6 @@ exports.createLeaveAssets = (req, res, next) => {
                 { error: "Something went wrong" },
               ],
             });
-            console.log(err);
           });
       };
       
@@ -94,7 +92,6 @@ exports.createLeaveAssets = (req, res, next) => {
                 { error: "Something Went Wrong" },
               ],
             });
-            console.log(err);
           });
       };
 

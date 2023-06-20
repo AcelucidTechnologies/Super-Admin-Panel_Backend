@@ -28,7 +28,6 @@ exports.getLocation=(req,res,next)=>{
     Location.find({ username: username })
       .then((response) => {
         if (response) {
-            console.log(response)
           res.status(200).send(response);
         }
       })
@@ -38,6 +37,5 @@ exports.getLocation=(req,res,next)=>{
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
 }

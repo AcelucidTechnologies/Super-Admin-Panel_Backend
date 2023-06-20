@@ -28,8 +28,9 @@ const multerS3 = require("multer-s3");
     });
 exports.uploadOrder = uploadData.single("image")
 
-exports.createCustomerDetails= (req,res,next)=>{
-    let data = new Customer({
+exports.createCustomerDetails = async (req, res, next) => {
+    try {
+      const data = new Customer({
         username: req.body.username,
         name: req.body.name,
         contactNumber: req.body.contactNumber,
@@ -37,21 +38,25 @@ exports.createCustomerDetails= (req,res,next)=>{
         department: req.body.department,
         paymentMode: req.body.paymentMode,
         image: req.file.originalname,
-    })
-    data.save().then((response)=>{
-        if(response){
-            res.status(200).json(response)
-        }else{
-            res.status(404).json({
-                error: "Data not found"
-            })
-        }
-    }).catch((err)=>{
-        res.status(500).json({
-            error: `Something went wrong ${err}`
-        })
-    })
-}
+        discount: req.body.discount,
+        amount: req.body.amount,
+        totalAmount: req.body.totalAmount
+      });
+  
+      const response = await data.save();
+      if (response) {
+        res.status(200).json(response);
+      } else {
+        res.status(404).json({
+          error: "Data not found"
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        error: `Something went wrong ${err}`
+      });
+    }
+  };
 
 exports.getCustomerDetails=(req,res,next)=>{
     let { username } = req.query;
@@ -67,6 +72,5 @@ exports.getCustomerDetails=(req,res,next)=>{
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
 }

@@ -1,11 +1,9 @@
 const Designation= require("../models/designation");
-
 exports.createDesignation= (req,res,next)=>{
     let data = new Designation({
         username: req.body.username,
         designation: req.body.designation
     })
-
     Designation.findOne({designation: data.designation,username: data.username}).then((response)=>{
         if(!response){
             data.save().then((result)=>{
@@ -23,7 +21,6 @@ exports.createDesignation= (req,res,next)=>{
     })
 }
 
-
 exports.getDesignation=(req,res,next)=>{
     let { username } = req.query;
     Designation.find({ username: username })
@@ -38,6 +35,5 @@ exports.getDesignation=(req,res,next)=>{
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
 }

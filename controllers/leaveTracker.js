@@ -177,7 +177,6 @@ exports.uploadLeave = uploadData.single("image")
             { error: "Something went wrong while fetching Leave Tracker details" },
           ],
         });
-        console.log(err);
       });
 }
 
@@ -205,7 +204,6 @@ exports.deleteLeaveTracker = (req, res, next) => {
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
   };
   
@@ -234,7 +232,6 @@ exports.deleteLeaveTracker = (req, res, next) => {
             { error: "Something went wrong" },
           ],
         });
-        console.log(err);
       });
   };
 
@@ -302,11 +299,9 @@ exports.deleteLeaveTracker = (req, res, next) => {
       };
   
       const sendGridResponse = await sgMail.send(msg);
-      console.log(sendGridResponse);
   
       res.status(200).json({ leaveTracker, totalLeave });
     } catch (err) {
-      console.error(err);
       res.status(500).json({
         error: "Something went wrong while saving the leave.",
       });
@@ -340,7 +335,6 @@ exports.deleteLeaveTracker = (req, res, next) => {
 
       res.status(200).send('Leave request approved successfully.');
     } catch (err) {
-      console.error(err);
       res.status(500).send('An error occurred while approving the leave request.');
     }
   };

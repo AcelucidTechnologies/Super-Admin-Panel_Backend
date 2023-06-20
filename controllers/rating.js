@@ -91,20 +91,17 @@ exports.createRating = (req, res, next) => {
         console.log("Failed reviewer count.");
       }
       // Find or create the reviewer in the Review List table
-      console.log("153")
       ReviewList.findOneAndUpdate(
         { reviewSubject: req.body.review },
         { new: true, upsert: true }
       )
         .then((listResponse) => {
           if (listResponse) {
-            console.log("161",listResponse)
             // Increment the count in Review List table
             listResponse.count += 1;
             listResponse
               .save()
               .then(() => {
-                console.log("Count increased in Review List:", listResponse);
                 // Save the rating entry
                 return data.save();
               })
@@ -157,9 +154,7 @@ exports.createRating = (req, res, next) => {
     .then((result) => {
       if (result) {
         // Reviewer count updated or new reviewer created
-        console.log("Reviewer count updated:", result);
       } else {
-        console.log("Failed to update reviewer count.");
       }
       // Find or create the reviewer in the ReviewerList table
       Reviewer.findOneAndUpdate(
@@ -173,7 +168,6 @@ exports.createRating = (req, res, next) => {
             listResult
               .save()
               .then(() => {
-                console.log("Count increased in ReviewerList:", listResult);
                 // Save the rating entry
               })
           } else {
