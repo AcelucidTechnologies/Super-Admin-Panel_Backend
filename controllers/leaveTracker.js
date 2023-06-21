@@ -168,8 +168,10 @@ exports.createLeaveTracker = (req, res, next) => {
         leaveTracker.image = req.file.originalname;
       }
 
-      return leaveTracker.save().then(() => {
-        // Send email
+     leaveTracker.save().then((result) => {
+      res.status(200).json({result});
+     })
+       // Send email
         const emailContent = `
           <p>${username},</p>
           <p>${reason}<p>
@@ -183,11 +185,8 @@ exports.createLeaveTracker = (req, res, next) => {
           subject: "Leave Approval",
           html: emailContent,
         };
-
-        return sgMail.send(msg).then(() => {
-          res.status(200).json({ leaveTracker, totalLeave });
-        });
-      });
+       sgMail.send(msg)
+     
     })
     .catch((err) => {
       res.status(500).json({
