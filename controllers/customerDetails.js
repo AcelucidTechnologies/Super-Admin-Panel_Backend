@@ -40,7 +40,7 @@ exports.createCustomerDetails = async (req, res, next) => {
         image: req.file.originalname,
         discount: req.body.discount,
         amount: req.body.amount,
-        totalAmount: req.body.totalAmount
+        totalAmount: calculateTotalAmount(req.body.amount, req.body.discount)
       });
   
       const response = await data.save();
@@ -57,6 +57,12 @@ exports.createCustomerDetails = async (req, res, next) => {
       });
     }
   };
+  
+  const calculateTotalAmount = (amount, discount) => {
+    const totalAmount = (amount * discount) / 100;
+    return totalAmount;
+  };
+  
 
 exports.getCustomerDetails=(req,res,next)=>{
     let { username } = req.query;

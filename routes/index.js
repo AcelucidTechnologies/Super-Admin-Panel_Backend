@@ -189,6 +189,8 @@ const { createDocument, uploadDocument, getDocument, getDocuemntById, deleteDocu
 const { sendMail } = require("../controllers/sendGridMail");
 const { createCustomerDetails, uploadOrder, getCustomerDetails } = require("../controllers/customerDetails");
 const { CreateOrder } = require("../controllers/createOrder");
+const { CreateOrderStatus, getOrderStatus, getOrderStatusById, deleteOrderStatus, updateOrderStatus } = require("../controllers/orderStatus");
+const { createUserList, getUserList, getUserListById, deleteUserList, updateUserList } = require("../controllers/user");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -974,7 +976,6 @@ router.get(
 
 // source Hiring
 
-
 router.post(
   "/createSourceHiring",
   rolehandler.grantAccess("readOwn", "profile"),
@@ -1174,4 +1175,69 @@ router.post(
   "/createOrder",
   rolehandler.grantAccess("updateOwn", "profile"),
   CreateOrder
+);
+
+// order Status Apis
+
+
+router.post(
+  "/CreateOrderStatus",
+  rolehandler.grantAccess("createOwn", "profile"),
+  CreateOrderStatus
+);
+router.get(
+  "/getOrderStatus",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getOrderStatus
+);
+router.get(
+  "/getOrderStatusById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getOrderStatusById
+);
+// router.put(
+//   "/products",
+//   rolehandler.grantAccess("updateOwn", "profile"),
+//   updateProduct
+// );
+router.delete(
+  "/deleteOrderStatus",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteOrderStatus
+);
+
+router.put(
+  "/updateOrderStatus",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateOrderStatus
+);
+
+//  userList module
+
+router.post(
+  "/createUserList",
+  rolehandler.grantAccess("createOwn", "profile"),
+  createUserList
+);
+router.get(
+  "/getUserList",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getUserList
+);
+router.get(
+  "/getUserListById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getUserListById
+);
+
+router.delete(
+  "/deleteUserList",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteUserList
+);
+
+router.put(
+  "/updateUserList",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateUserList
 );
