@@ -168,27 +168,25 @@ exports.createLeaveTracker = (req, res, next) => {
         leaveTracker.image = req.file.originalname;
       }
 
-      return leaveTracker.save().then(() => {
-        // Send email
-      //   const emailContent = `
-      //     <p>${username},</p>
-      //     <p>${reason}<p>
-      //     <p>Please click on the below link to review and approve/disapprove the leave:</p>
-      //     <a href="http://13.126.212.31/">Click here to approve</a>
-      //   `;
+     leaveTracker.save().then((result) => {
+      res.status(200).json({result});
+     })
+       // Send email
+        const emailContent = `
+          <p>${username},</p>
+          <p>${reason}<p>
+          <p>Please click on the below link to review and approve/disapprove the leave:</p>
+          <a href="http://13.126.212.31/">Click here to approve</a>
+        `;
 
-      //   const msg = {
-      //     to: "himanshu.aswal@acelucid.com",
-      //     from: "shivam.rawat@acelucid.com",
-      //     subject: "Leave Approval",
-      //     html: emailContent,
-      //   };
-
-      //   return sgMail.send(msg).then(() => {
-      //     
-      //   });
-      res.status(200).json({ leaveTracker, totalLeave });
-       });
+        const msg = {
+          to: "himanshu.aswal@acelucid.com",
+          from: "shivam.rawat@acelucid.com",
+          subject: "Leave Approval",
+          html: emailContent,
+        };
+       sgMail.send(msg)
+     
     })
     .catch((err) => {
       res.status(500).json({
