@@ -36,7 +36,12 @@ exports.getLeaveTracker = (req, res, next) => {
   LeaveTracker.find({ username: username })
     .then((response) => {
       if (response) {
-        res.status(200).send(response);
+        const formattedResponse = response.map((item) => ({
+          ...item._doc,
+          fromDate: new Date(item.fromDate).toISOString().split("T")[0],
+          toDate: new Date(item.toDate).toISOString().split("T")[0],
+        }));
+        res.status(200).json(formattedResponse);
       }
     })
     .catch((err) => {
@@ -98,7 +103,6 @@ exports.getLeaveTrackerById = (req, res, next) => {
     });
 };
 
-
 exports.createLeaveTracker = (req, res, next) => {
   const {
     username,
@@ -136,7 +140,7 @@ exports.createLeaveTracker = (req, res, next) => {
       if (leaveType === "earned") {
         const minAllowedDate = new Date();
         minAllowedDate.setDate(today.getDate() + 3); // Add 3 days to today's date
-      
+
         if (startDate <= minAllowedDate) {
           return res.status(400).json({
             error: "Earned leave can apply only before three days.",
@@ -144,11 +148,22 @@ exports.createLeaveTracker = (req, res, next) => {
         }
       }
 
-      const updatedLeaveCount = totalLeave[leaveType] - numberOfDays;
-      if (updatedLeaveCount < 0) {
-        return res.status(400).json({
-          error: "Insufficient leave balance.",
-        });
+      // const updatedLeaveCount = totalLeave[leaveType] - numberOfDays;
+      // if (updatedLeaveCount < 0) {
+      //   return res.status(400).json({
+      //     error: "Insufficient leave balance.",
+      //   });
+      // }
+
+      // totalLeave[leaveType] = updatedLeaveCount;
+      let updatedLeaveCount;
+      if (leaveType !== "compOff" && leaveType !== "leaveWithoutpay") {
+        updatedLeaveCount = totalLeave[leaveType] - numberOfDays;
+        if (updatedLeaveCount < 0) {
+          return res.status(400).json({
+            error: "Insufficient leave balance",
+          });
+        }
       }
 
       totalLeave[leaveType] = updatedLeaveCount;
@@ -168,25 +183,24 @@ exports.createLeaveTracker = (req, res, next) => {
         leaveTracker.image = req.file.originalname;
       }
 
-     leaveTracker.save().then((result) => {
-      res.status(200).json({result});
-     })
-       // Send email
-        const emailContent = `
+      leaveTracker.save().then((result) => {
+        res.status(200).json({ result });
+      });
+      // Send email
+      const emailContent = `
           <p>${username},</p>
           <p>${reason}<p>
           <p>Please click on the below link to review and approve/disapprove the leave:</p>
           <a href="http://13.126.212.31/">Click here to approve</a>
         `;
 
-        const msg = {
-          to: "himanshu.aswal@acelucid.com",
-          from: "himanshu.975677@gmail.com",
-          subject: "Leave Approval",
-          html: emailContent,
-        };
-       sgMail.send(msg)
-     
+      const msg = {
+        to: `${appliedTo}`,
+        from: "himanshu.975677@gmail.com",
+        subject: "Leave Approval",
+        html: emailContent,
+      };
+      sgMail.send(msg);
     })
 
     .catch((err) => {
@@ -196,7 +210,6 @@ exports.createLeaveTracker = (req, res, next) => {
     });
 };
 
-
 exports.approve = (req, res, next) => {
   const leaveTrackerId = req.query.id;
 
@@ -205,45 +218,52 @@ exports.approve = (req, res, next) => {
       if (!leaveTracker) {
         return res.status(400).send("Leave tracker not found.");
       }
-
       leaveTracker.status = "approved";
       return leaveTracker.save();
     })
     .then((leaveTracker) => {
-      return TotalLeave.findOne({ username: leaveTracker.username })
-        .then((totalLeave) => {
+       TotalLeave.findOne({ username: leaveTracker.username }).then(
+        (totalLeave) => {
           if (!totalLeave) {
-            throw new Error("Total leave count not found for the user.");
+            res.status(400).json({
+             error: "Total leave count not found for the user."
+            })
           }
-
           const numberOfDays = Math.ceil(
-            (leaveTracker.toDate - leaveTracker.fromDate + 24 * 60 * 60 * 1000) /
-            (24 * 60 * 60 * 1000)
+            (leaveTracker.toDate -
+              leaveTracker.fromDate +
+              24 * 60 * 60 * 1000) /
+              (24 * 60 * 60 * 1000)
           );
 
           if (leaveTracker.leaveType === "compOff") {
-            totalLeave[leaveTracker.leaveType] += 1;
-          } 
-          else {
-            totalLeave[leaveTracker.leaveType] -= numberOfDays-1;
+            totalLeave[leaveTracker.leaveType] += numberOfDays;
+          } else if (leaveTracker.leaveType === "leaveWithoutpay") {
+            totalLeave[leaveTracker.leaveType] += numberOfDays;
+          } else {
+            totalLeave[leaveTracker.leaveType] -= numberOfDays;
           }
-        totalLeave.save().then(() => {
-          res.status(200).send("Leave request approved successfully.");
-         })
+          totalLeave.save().then(() => {
+            res.status(200).json("Leave request approved successfully.");
+          });
           const msg = {
-            to: "himanshu.aswal@acelucid.com",
+            to: `${leaveTracker.username}`,
             from: "himanshu.975677@gmail.com",
             subject: "Leave Request Approved",
             html: "<p>Your leave request has been approved.</p>",
           };
-         sgMail.send(msg);
-        })
+          sgMail.send(msg);
+        }
+      );
     })
+  
     .catch((err) => {
       console.error(err);
       res.status(500).send("An error occurred approving the leave request.");
     });
 };
+
+
 
 exports.disapprove = (req, res, next) => {
   const leaveTrackerId = req.query.id;
@@ -259,31 +279,31 @@ exports.disapprove = (req, res, next) => {
       // Check if leave tracker is already disapproved
       if (leaveTracker.status === "disapproved") {
         return res.status(400).json({
-          error: "Leave tracker is already disapproved.",
+          error: "Leave is already disapproved.",
         });
       }
       // Update leave tracker status to disapproved
       leaveTracker.status = "disapproved";
       leaveTracker.save().then((result) => {
         res.status(200).json({
-          message: "Leave disapprove Successfully"
+          message: "Leave disapprove Successfully",
         });
-       })
-         // Send email
-          const emailContent = `
+      });
+      // Send email
+      const emailContent = `
           <p>Your leave application has been disapproved.</p>
           <p>Leave details:</p>
           <p>From: ${leaveTracker.fromDate}</p>
           <p>To: ${leaveTracker.toDate}</p>
           `;
-  
-          const msg = {
-            to: "himanshu.aswal@acelucid.com",
-            from: "himanshu.975677@gmail.com",
-            subject: "Leave Approval",
-            html: emailContent,
-          };
-         sgMail.send(msg)
+
+      const msg = {
+        to: "himanshu.aswal@acelucid.com",
+        from: "himanshu.975677@gmail.com",
+        subject: "Leave Approval",
+        html: emailContent,
+      };
+      sgMail.send(msg);
     })
     .catch((err) => {
       res.status(500).json({
@@ -292,20 +312,20 @@ exports.disapprove = (req, res, next) => {
     });
 };
 
-
 exports.getAllLeaveTracker = (req, res, next) => {
-  LeaveTracker.find().then((response)=>{
-    if(response){
-      res.status(200).json(response)
-    }
-    else{
-      res.status(208).json({
-        error: "Data not Found"
-      })
-    }
-  }).catch((err)=>{
-    res.status(500).json({
-    error: "Something went wrong"
+  LeaveTracker.find()
+    .then((response) => {
+      if (response) {
+        res.status(200).json(response);
+      } else {
+        res.status(208).json({
+          error: "Data not Found",
+        });
+      }
     })
-  })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+      });
+    });
 };

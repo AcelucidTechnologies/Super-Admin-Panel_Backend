@@ -213,3 +213,15 @@ exports.getTeamData = (req, res, next) => {
       res.status(500).send(err);
     });
 };
+
+exports.getEmail = (req, res, next) => {
+  let { username } = req.query;
+  LeaveManagementProfile.find({ username: username })
+    .select({ email: 1, })
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
