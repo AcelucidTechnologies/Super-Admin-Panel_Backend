@@ -181,13 +181,14 @@ exports.createLeaveTracker = (req, res, next) => {
 
         const msg = {
           to: "himanshu.aswal@acelucid.com",
-          from: "shivam.rawat@acelucid.com",
+          from: "himanshu.975677@gmail.com",
           subject: "Leave Approval",
           html: emailContent,
         };
        sgMail.send(msg)
      
     })
+
     .catch((err) => {
       res.status(500).json({
         error: "Something went wrong while saving the leave.",
@@ -226,23 +227,17 @@ exports.approve = (req, res, next) => {
           else {
             totalLeave[leaveTracker.leaveType] -= numberOfDays-1;
           }
-          return totalLeave.save();
-        })
-        .then(() => {
+        totalLeave.save().then(() => {
+          res.status(200).send("Leave request approved successfully.");
+         })
           const msg = {
             to: "himanshu.aswal@acelucid.com",
-            from: "shivam.rawat@acelucid.com",
+            from: "himanshu.975677@gmail.com",
             subject: "Leave Request Approved",
             html: "<p>Your leave request has been approved.</p>",
           };
-          return sgMail.send(msg);
+         sgMail.send(msg);
         })
-        .then(() => {
-          res.status(200).send("Leave request approved successfully.");
-        })
-        .catch((err) => {
-          throw new Error("An error occurred the leave request.");
-        });
     })
     .catch((err) => {
       console.error(err);
@@ -250,7 +245,67 @@ exports.approve = (req, res, next) => {
     });
 };
 
+exports.disapprove = (req, res, next) => {
+  const leaveTrackerId = req.query.id;
 
-exports.disapprove=(req,res,next)=>{
+  LeaveTracker.findById(leaveTrackerId)
+    .then((leaveTracker) => {
+      if (!leaveTracker) {
+        return res.status(404).json({
+          error: "Leave tracker not found.",
+        });
+      }
 
-}
+      // Check if leave tracker is already disapproved
+      if (leaveTracker.status === "disapproved") {
+        return res.status(400).json({
+          error: "Leave tracker is already disapproved.",
+        });
+      }
+      // Update leave tracker status to disapproved
+      leaveTracker.status = "disapproved";
+      leaveTracker.save().then((result) => {
+        res.status(200).json({
+          message: "Leave disapprove Successfully"
+        });
+       })
+         // Send email
+          const emailContent = `
+          <p>Your leave application has been disapproved.</p>
+          <p>Leave details:</p>
+          <p>From: ${leaveTracker.fromDate}</p>
+          <p>To: ${leaveTracker.toDate}</p>
+          `;
+  
+          const msg = {
+            to: "himanshu.aswal@acelucid.com",
+            from: "himanshu.975677@gmail.com",
+            subject: "Leave Approval",
+            html: emailContent,
+          };
+         sgMail.send(msg)
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong while disapproving the leave.",
+      });
+    });
+};
+
+
+exports.getAllLeaveTracker = (req, res, next) => {
+  LeaveTracker.find().then((response)=>{
+    if(response){
+      res.status(200).json(response)
+    }
+    else{
+      res.status(208).json({
+        error: "Data not Found"
+      })
+    }
+  }).catch((err)=>{
+    res.status(500).json({
+    error: "Something went wrong"
+    })
+  })
+};
