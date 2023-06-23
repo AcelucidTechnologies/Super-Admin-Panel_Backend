@@ -6,11 +6,12 @@ const leaveTrakerSchema= new Schema({
     appliedTo: {type: String},
     fromDate: {type: Date},
     toDate: {type: Date},
+    subject: {type: String},
     contactNo: {type: Number},
     altConatctNo: {type: Number},
     reason: {type: String},
     image: {type: String},
-    status: {type: String, default: "pending"} ,// Initialize leaveTracker status as 'Pending'
+    status: {type: String, default: "pending"} ,
 },
 {
     timestamps: true,

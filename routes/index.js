@@ -193,6 +193,7 @@ const { CreateOrderStatus, getOrderStatus, getOrderStatusById, deleteOrderStatus
 const { createUserList, getUserList, getUserListById, deleteUserList, updateUserList } = require("../controllers/user");
 const { createSubscription, getSubscription, getSubscriptionById, deleteSubscription, updateSubscription } = require("../controllers/subscriptionPlan");
 const { createProductOption, getProductOption, getProductOptionById, deleteProductOption, updateProductOption } = require("../controllers/productOption");
+const { createAddCoupon, getAddCoupon, getAddCouponById, deleteAddCoupon, updateAddCoupon } = require("../controllers/addCoupon");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -1320,4 +1321,36 @@ router.put(
   "/updateProductOption",
   rolehandler.grantAccess("updateOwn", "profile"),
   updateProductOption
+);
+
+// ADD Coupons
+
+router.post(
+  "/createAddCoupon",
+  rolehandler.grantAccess("createOwn", "profile"),
+  createAddCoupon
+);
+
+router.get(
+  "/getAddCoupon",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAddCoupon
+);
+
+router.get(
+  "/getAddCouponById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAddCouponById
+);
+
+router.delete(
+  "/deleteAddCoupon",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteAddCoupon
+);
+
+router.put(
+  "/updateAddCoupon",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateAddCoupon
 );

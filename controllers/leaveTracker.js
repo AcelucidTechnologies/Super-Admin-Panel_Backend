@@ -109,6 +109,7 @@ exports.createLeaveTracker = (req, res, next) => {
     leaveType,
     appliedTo,
     fromDate,
+    subject,
     toDate,
     contactNo,
     altContactNo,
@@ -163,6 +164,7 @@ exports.createLeaveTracker = (req, res, next) => {
         username,
         leaveType,
         appliedTo,
+        subject,
         fromDate: startDate,
         toDate: endDate,
         contactNo: parseInt(contactNo),
@@ -180,6 +182,7 @@ exports.createLeaveTracker = (req, res, next) => {
       // Send email
       const emailContent = `
           <p>${username},</p>
+          <p>Subject: ${subject}</p>
           <p>${reason}<p>
           <p>Please click on the below link to review and approve/disapprove the leave:</p>
           <a href="http://13.126.212.31/">Click here to approve</a>
@@ -278,7 +281,7 @@ exports.disapprove = (req, res, next) => {
           message: "Leave disapprove Successfully",
         });
       });
-      
+
       // Send email
       const emailContent = `
           <p>Your leave application has been disapproved.</p>
