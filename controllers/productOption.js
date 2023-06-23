@@ -1,8 +1,8 @@
-const Subscription= require("../subscriptionModule/subscriptionPlan")
+const ProductOption = require("../models/productOption")
 
-exports.getSubscription=(req,res,next)=>{
+exports.getProductOption=(req,res,next)=>{
     let { username } = req.query;
-    Subscription.find({username: username}).sort({ _id: -1 }).then((response)=>{
+    ProductOption.find({username: username}).sort({ _id: -1 }).then((response)=>{
         if(response[0]){
             res.status(200).json(response)
         }else{
@@ -18,18 +18,12 @@ exports.getSubscription=(req,res,next)=>{
   }
   
 
-  exports.createSubscription = (req, res, next) => {
-    let data = new Subscription({
+  exports.createProductOption = (req, res, next) => {
+    let data = new ProductOption({
         username: req.body.username,
-        planName: req.body.planName,
-        planCode: req.body.planCode,
-        price: req.body.price,
-        billEvery: req.body.billEvery,
-        billingCycle: req.body.billingCycle,
-        planInDays: req.body.planInDays,
-        comment: req.body.comment
+        productName: req.body.productName
     });
-    Subscription.findOne({ planCode: data.planCode,
+    ProductOption.findOne({ productName: data.productName,
       username: data.username }).then(
       (response) => {
         if (!response) {
@@ -50,7 +44,7 @@ exports.getSubscription=(req,res,next)=>{
     })
   };
   
-  exports.updateSubscription = (req, res, next) => {
+  exports.updateProductOption = (req, res, next) => {
     let Id;
     if (req.query.id) {
       Id = req.query.id;
@@ -58,7 +52,7 @@ exports.getSubscription=(req,res,next)=>{
       return next();
     }
     let Data = req.body;
-    Subscription
+    ProductOption
       .findByIdAndUpdate(Id, Data, { new: true })
       .then((response) => {
         if (response) {
@@ -67,19 +61,19 @@ exports.getSubscription=(req,res,next)=>{
       })
       .catch((err) => {
         res.status(500).json({
-          errors: [{ error: "Something went wrong while updating Rating Criteria" }],
+          errors: [{ error: "Something went wrong while updating ProductOption" }],
         });
       });
   };
   
-  exports.deleteSubscription = (req, res, next) => {
+  exports.deleteProductOption = (req, res, next) => {
     let Id;
     if (req.query.id) {
       Id = req.query.id;
     } else {
       return next();
     }
-    Subscription.findByIdAndDelete(Id)
+    ProductOption.findByIdAndDelete(Id)
       .then((response) => {
         if (response) {
           res.status(200).send(response);
@@ -88,17 +82,17 @@ exports.getSubscription=(req,res,next)=>{
       .catch((err) => {
         res.status(500).json({
           errors: [
-            { error: "Something went wrong while deleting Subscription plan" },
+            { error: "Something went wrong while deleting ProductOption" },
           ],
         });
       });
   };
   
-  exports.getSubscriptionById = (req, res, next) => {
+  exports.getProductOptionById = (req, res, next) => {
     let  Id
     if (req.query.id) { Id = req.query.id }
     else { return next() }
-    RatingCriteria.findById(Id)
+    ProductOption.findById(Id)
       .then((response) => {
         if (response) {
           res.status(200).send(response);
@@ -106,7 +100,7 @@ exports.getSubscription=(req,res,next)=>{
       })
       .catch((err) => {
         res.status(500).json({
-          errors: [{ error: "Something went wrong while fetching a Subscription Plan" }],
+          errors: [{ error: "Something went wrong while fetching a ProductOption" }],
         });
       });
   };

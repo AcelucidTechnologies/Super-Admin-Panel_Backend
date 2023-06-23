@@ -173,7 +173,7 @@ const {
   getReviewerListById,
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
-const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile, getTeamData } = require("../controllers/leaveManagementProfile");
+const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile, getTeamData, getEmail } = require("../controllers/leaveManagementProfile");
 const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById, approve, disapprove, getAllLeaveTracker,} = require("../controllers/leaveTracker");
 const { getTotalLeaves } = require("../controllers/totalLeaves");
 const { createLeaveAssets, getLeaveAssets, getLeaveAssetsById, deleteLeaveAssets, updateLeaveAssets } = require("../controllers/leaveManagementAssets");
@@ -191,6 +191,8 @@ const { createCustomerDetails, uploadOrder, getCustomerDetails } = require("../c
 const { CreateOrder } = require("../controllers/createOrder");
 const { CreateOrderStatus, getOrderStatus, getOrderStatusById, deleteOrderStatus, updateOrderStatus } = require("../controllers/orderStatus");
 const { createUserList, getUserList, getUserListById, deleteUserList, updateUserList } = require("../controllers/user");
+const { createSubscription, getSubscription, getSubscriptionById, deleteSubscription, updateSubscription } = require("../controllers/subscriptionPlan");
+const { createProductOption, getProductOption, getProductOptionById, deleteProductOption, updateProductOption } = require("../controllers/productOption");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -868,6 +870,12 @@ router.post(
     updateLeaveProfile
   );
 
+  router.get(
+    "/getEmail",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getEmail
+  );
+
 
   // leave tracker module
   router.get(
@@ -1242,9 +1250,74 @@ router.put(
   updateUserList
 );
 
+//      getAllTotal Leave
 
 router.get(
   "/getAllLeaveTracker",
   rolehandler.grantAccess("readOwn", "profile"),
   getAllLeaveTracker
+);
+
+
+// Subscription Module
+
+router.post(
+  "/createSubscription",
+  rolehandler.grantAccess("createOwn", "profile"),
+  createSubscription
+);
+router.get(
+  "/getSubscription",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getSubscription
+);
+router.get(
+  "/getSubscriptionById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getSubscriptionById
+);
+
+router.delete(
+  "/deleteSubscription",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteSubscription
+);
+
+router.put(
+  "/updateSubscription",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateSubscription
+);
+
+
+// 
+
+router.post(
+  "/createProductOption",
+  rolehandler.grantAccess("createOwn", "profile"),
+  createProductOption
+);
+
+router.get(
+  "/getProductOption",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getProductOption
+);
+
+router.get(
+  "/ getProductOptionById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getProductOptionById
+);
+
+router.delete(
+  "/deleteProductOption",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteProductOption
+);
+
+router.put(
+  "/updateProductOption",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateProductOption
 );

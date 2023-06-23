@@ -1,4 +1,4 @@
-const { result } = require("lodash");
+
 const PageSetUp = require("../models/pageSetUp");
 const pageSetUp = require("../models/pageSetUp");
 
