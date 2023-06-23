@@ -109,6 +109,7 @@ exports.createLeaveTracker = (req, res, next) => {
     leaveType,
     appliedTo,
     fromDate,
+    subject,
     toDate,
     contactNo,
     altContactNo,
@@ -123,7 +124,7 @@ exports.createLeaveTracker = (req, res, next) => {
   const numberOfDays = Math.ceil((endDate - startDate + oneDay) / oneDay);
 
   if (numberOfDays <= 0) {
-    return res.status(400).json({
+    return res.status(200).json({
       error:
         "Invalid date range. 'toDate' should be greater than or equal to 'fromDate'.",
     });
@@ -142,25 +143,16 @@ exports.createLeaveTracker = (req, res, next) => {
         minAllowedDate.setDate(today.getDate() + 3); // Add 3 days to today's date
 
         if (startDate <= minAllowedDate) {
-          return res.status(400).json({
+          return res.status(200).json({
             error: "Earned leave can apply only before three days.",
           });
         }
       }
-
-      // const updatedLeaveCount = totalLeave[leaveType] - numberOfDays;
-      // if (updatedLeaveCount < 0) {
-      //   return res.status(400).json({
-      //     error: "Insufficient leave balance.",
-      //   });
-      // }
-
-      // totalLeave[leaveType] = updatedLeaveCount;
       let updatedLeaveCount;
       if (leaveType !== "compOff" && leaveType !== "leaveWithoutpay") {
         updatedLeaveCount = totalLeave[leaveType] - numberOfDays;
         if (updatedLeaveCount < 0) {
-          return res.status(400).json({
+          return res.status(200).json({
             error: "Insufficient leave balance",
           });
         }
@@ -172,6 +164,7 @@ exports.createLeaveTracker = (req, res, next) => {
         username,
         leaveType,
         appliedTo,
+        subject,
         fromDate: startDate,
         toDate: endDate,
         contactNo: parseInt(contactNo),
@@ -189,6 +182,7 @@ exports.createLeaveTracker = (req, res, next) => {
       // Send email
       const emailContent = `
           <p>${username},</p>
+          <p>Subject: ${subject}</p>
           <p>${reason}<p>
           <p>Please click on the below link to review and approve/disapprove the leave:</p>
           <a href="http://13.126.212.31/">Click here to approve</a>
@@ -218,7 +212,7 @@ exports.approve = (req, res, next) => {
       if (!leaveTracker) {
         return res.status(400).send("Leave tracker not found.");
       }
-      leaveTracker.status = "approved";
+      leaveTracker.status = "Approved";
       return leaveTracker.save();
     })
     .then((leaveTracker) => {
@@ -243,6 +237,7 @@ exports.approve = (req, res, next) => {
           } else {
             totalLeave[leaveTracker.leaveType] -= numberOfDays;
           }
+
           totalLeave.save().then(() => {
             res.status(200).json("Leave request approved successfully.");
           });
@@ -263,11 +258,8 @@ exports.approve = (req, res, next) => {
     });
 };
 
-
-
 exports.disapprove = (req, res, next) => {
   const leaveTrackerId = req.query.id;
-
   LeaveTracker.findById(leaveTrackerId)
     .then((leaveTracker) => {
       if (!leaveTracker) {
@@ -277,18 +269,19 @@ exports.disapprove = (req, res, next) => {
       }
 
       // Check if leave tracker is already disapproved
-      if (leaveTracker.status === "disapproved") {
-        return res.status(400).json({
+      if (leaveTracker.status === "Disapproved") {
+        return res.status(200).json({
           error: "Leave is already disapproved.",
         });
       }
       // Update leave tracker status to disapproved
-      leaveTracker.status = "disapproved";
+      leaveTracker.status = "Disapproved";
       leaveTracker.save().then((result) => {
         res.status(200).json({
           message: "Leave disapprove Successfully",
         });
       });
+
       // Send email
       const emailContent = `
           <p>Your leave application has been disapproved.</p>
