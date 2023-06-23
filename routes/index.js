@@ -194,6 +194,7 @@ const { createUserList, getUserList, getUserListById, deleteUserList, updateUser
 const { createSubscription, getSubscription, getSubscriptionById, deleteSubscription, updateSubscription } = require("../controllers/subscriptionPlan");
 const { createProductOption, getProductOption, getProductOptionById, deleteProductOption, updateProductOption } = require("../controllers/productOption");
 const { createAddCoupon, getAddCoupon, getAddCouponById, deleteAddCoupon, updateAddCoupon } = require("../controllers/addCoupon");
+const { createAddAddons, getAddAddons, getAddAddonsById, deleteAddAddons, updateAddAddons } = require("../controllers/addAdons");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -1353,4 +1354,38 @@ router.put(
   "/updateAddCoupon",
   rolehandler.grantAccess("updateOwn", "profile"),
   updateAddCoupon
+);
+
+
+// Add Addons
+
+
+router.post(
+  "/createAddAddons",
+  rolehandler.grantAccess("createOwn", "profile"),
+  createAddAddons
+);
+
+router.get(
+  "/getAddAddons",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAddAddons
+);
+
+router.get(
+  "/getAddAddonsById",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getAddAddonsById
+);
+
+router.delete(
+  "/deleteAddAddons",
+  rolehandler.grantAccess("deleteOwn", "profile"),
+  deleteAddAddons
+);
+
+router.put(
+  "/updateAddAddons",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateAddAddons
 );
