@@ -217,7 +217,7 @@ exports.getTeamData = (req, res, next) => {
 exports.getEmail = (req, res, next) => {
   let { username } = req.query;
   LeaveManagementProfile.find({ username: username })
-    .select({ email: 1, })
+    .select({ email: 1, employeeFullName: 1})
     .then((response) => {
       res.status(200).json(response);
     })
