@@ -13,7 +13,12 @@ let data= new ExitDetails({
     allAssets: req.body.allAssets,
     noticePeriod: req.body.noticePeriod,
     resignation: req.body.resignation,
-    manager: req.body.manager
+    manager: req.body.manager,
+    separationDate: req.body.separationDate,
+    workWithOrganisationAgain: req.body.workWithOrganisationAgain,
+    resignationLetterSubmitted: req.body.resignationLetterSubmitted,
+    addedBy: req.body.addedBy,
+    modifiedBy: req.body.modifiedBy
 })
   ExitDetails.findOne({emoloyeeId: req.body.emoloyeeId,username: req.body.username}).then((response) => {
         if (!response) {
