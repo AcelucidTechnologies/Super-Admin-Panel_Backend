@@ -1,24 +1,32 @@
 const Reimbursement = require("../models/travelExpense");
 
 exports.createReimbursement = (req, res, next) => {
+  const journeyDate = new Date(req.body.journeyDate);
+  const returnDate = new Date(req.body.returnDate);
+
+  if (journeyDate > returnDate) {
+    return res.status(200).json({ error: "invalid value for journey date" });
+  }
+
   let data = new Reimbursement({
     username: req.body.username,
     employeeId: req.body.employeeId,
     employeeName: req.body.employeeName,
-    journeyDate: req.body.journeyDate,
-    returnDate: req.body.returnDate,
+    journeyDate: journeyDate,
+    returnDate: returnDate,
     travelFrom: req.body.travelFrom,
     travelTo: req.body.travelTo,
     purposeTravel: req.body.purposeTravel,
     modifiedBy: req.body.modifiedBy,
     addedBy: req.body.addedBy
   });
+  
   data
     .save()
     .then((result) => {
       res.status(200).json(result);
     })
-    .catch((res) => {
+    .catch((error) => {
       res.status(500).json({
         error: "Something went wrong",
       });
