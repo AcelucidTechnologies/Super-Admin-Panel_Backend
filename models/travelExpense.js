@@ -10,6 +10,8 @@ const ReimbursementSchema= new Schema({
       travelFrom: {type: String},
       travelTo: {type: String},
       purposeTravel: {type: String},
+      modifiedBy: {type: String},
+      addedBy: {type: String}
 },
 {
     timestamps: true,

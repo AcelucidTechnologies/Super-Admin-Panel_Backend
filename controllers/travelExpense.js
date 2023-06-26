@@ -10,8 +10,9 @@ exports.createReimbursement = (req, res, next) => {
     travelFrom: req.body.travelFrom,
     travelTo: req.body.travelTo,
     purposeTravel: req.body.purposeTravel,
+    modifiedBy: req.body.modifiedBy,
+    addedBy: req.body.addedBy
   });
-
   data
     .save()
     .then((result) => {
