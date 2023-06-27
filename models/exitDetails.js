@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ExitDetailsSchema = new Schema(
   {
-    emoloyeeId: { type: String },
+    username: { type: String },
+    employeeId: { type: String },
     employeeName: { type: String },
     interviewerType: { type: String },
     reasonForLeaving: { type: String },
@@ -12,7 +13,7 @@ const ExitDetailsSchema = new Schema(
     improveStaffWelfare: { type: String },
     anythingShare: { type: String },
     allAssets: { type: String },
-    noticePeriod: { type: Number },
+    noticePeriod: { type: String },
     resignation: { type: String },
     manager: { type: String },
     separationDate: { type: Date },

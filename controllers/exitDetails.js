@@ -2,7 +2,8 @@ const ExitDetails= require("../models/exitDetails");
 
 exports.createExitDetails=(req,res,next)=>{
 let data= new ExitDetails({
-    emoloyeeId: req.body.emoloyeeId,
+    username: req.body.username,
+    employeeId: req.body.employeeId,
     employeeName: req.body.employeeName,
     interviewerType: req.body.interviewerType,
     reasonForLeaving: req.body.reasonForLeaving,
@@ -20,18 +21,16 @@ let data= new ExitDetails({
     addedBy: req.body.addedBy,
     modifiedBy: req.body.modifiedBy
 })
-  ExitDetails.findOne({emoloyeeId: req.body.emoloyeeId,username: req.body.username}).then((response) => {
+  ExitDetails.findOne({employeeId: data.employeeId,username: data.username}).then((response) => {
         if (!response) {
-            data.save().then((result)=>{
-                if(result){
-                    res.status(200).json(result)
-                }
-            })
+          data.save().then((result) => {
+            res.json(result);
+          });
         }
         else
         {
             res.status(208).json({
-                error: "Emoloyee ID Already Exit"
+                error: "Emoloyee ID Already Exits"
             })
         }
       }).catch((err)=>{
@@ -58,7 +57,6 @@ exports.getExitDetails=(req,res,next)=>{
         console.log(err);
       });
 }
-
 
 exports.deleteExitDetails = (req, res, next) => {
     let Id;
