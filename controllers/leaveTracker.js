@@ -197,7 +197,7 @@ exports.createLeaveTracker = (req, res, next) => {
           const msg = {
             to: recipient,
             from: "himanshu.975677@gmail.com",
-            subject: "Leave Approval",
+            subject: `${leaveTracker.subject}`,
             html: emailContent,
           };
           sgMail.send(msg);
@@ -248,13 +248,19 @@ exports.approve = (req, res, next) => {
           totalLeave.save().then(() => {
             res.status(200).json("Leave request approved successfully.");
           });
+          const emailContent = `
+          <p>Your leave application has been Approved.</p>
+          <p>From: ${leaveTracker.fromDate}</p>
+          <p>To: ${leaveTracker.toDate}</p>
+          `;
           const msg = {
             to: `${leaveTracker.username}`,
             from: "himanshu.975677@gmail.com",
-            subject: "Leave Request Approved",
-            html: "<p>Your leave request has been approved.</p>",
+            subject: `${leaveTracker.subject}`,
+            html: emailContent,
           };
           sgMail.send(msg);
+          console.log("263",sgMail.send(msg))
         }
       );
     })
@@ -292,15 +298,14 @@ exports.disapprove = (req, res, next) => {
       // Send email
       const emailContent = `
           <p>Your leave application has been disapproved.</p>
-          <p>Leave details:</p>
           <p>From: ${leaveTracker.fromDate}</p>
           <p>To: ${leaveTracker.toDate}</p>
           `;
 
       const msg = {
-        to: "himanshu.aswal@acelucid.com",
+        to: `${leaveTracker.username}`,
         from: "himanshu.975677@gmail.com",
-        subject: "Leave Approval",
+        subject: `${leaveTracker.subject}`,
         html: emailContent,
       };
       sgMail.sendMultiple(msg);
