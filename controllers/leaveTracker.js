@@ -116,6 +116,12 @@ exports.createLeaveTracker = (req, res, next) => {
     reason,
   } = req.body;
 
+  if (!appliedTo || !Array.isArray(appliedTo) || appliedTo.length === 0) {
+    return res.status(400).json({
+      error: "Must provide at least one valid email address in the 'appliedTo' field.",
+    });
+  }
+
   const startDate = new Date(fromDate);
   const endDate = new Date(toDate);
   const today = new Date();
@@ -159,7 +165,6 @@ exports.createLeaveTracker = (req, res, next) => {
       }
 
       totalLeave[leaveType] = updatedLeaveCount;
-
       const leaveTracker = new LeaveTracker({
         username,
         leaveType,
@@ -180,6 +185,7 @@ exports.createLeaveTracker = (req, res, next) => {
         res.status(200).json({ result });
       });
       // Send email
+      console.log("183",leaveTracker)
       const emailContent = `
           <p>${username},</p>
           <p>Subject: ${subject}</p>
@@ -187,15 +193,16 @@ exports.createLeaveTracker = (req, res, next) => {
           <p>Please click on the below link to review and approve/disapprove the leave:</p>
           <a href="http://13.126.212.31/">Click here to approve</a>
         `;
-
-      const msg = {
-        to: `${appliedTo}`,
-        from: "himanshu.975677@gmail.com",
-        subject: "Leave Approval",
-        html: emailContent,
-      };
-      sgMail.send(msg);
-    })
+        appliedTo.forEach((recipient) => {
+          const msg = {
+            to: recipient,
+            from: "himanshu.975677@gmail.com",
+            subject: "Leave Approval",
+            html: emailContent,
+          };
+          sgMail.send(msg);
+        });
+      })
 
     .catch((err) => {
       res.status(500).json({
@@ -296,7 +303,7 @@ exports.disapprove = (req, res, next) => {
         subject: "Leave Approval",
         html: emailContent,
       };
-      sgMail.send(msg);
+      sgMail.sendMultiple(msg);
     })
     .catch((err) => {
       res.status(500).json({

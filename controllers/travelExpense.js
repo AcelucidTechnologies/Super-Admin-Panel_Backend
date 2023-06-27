@@ -20,7 +20,6 @@ exports.createReimbursement = (req, res, next) => {
     modifiedBy: req.body.modifiedBy,
     addedBy: req.body.addedBy
   });
-  
   data
     .save()
     .then((result) => {

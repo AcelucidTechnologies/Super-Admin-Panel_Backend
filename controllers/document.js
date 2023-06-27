@@ -45,7 +45,7 @@ exports.uploadDocument = uploadData.single("image");
                 res.status(200).json(result);
               }).catch((err)=>{
                 res.status(404).json({
-                    error: `data not found ${err}`
+                    error: `data not found`
                 });
               })
             
