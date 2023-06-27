@@ -31,8 +31,8 @@ exports.uploadDocument = uploadData.single("image");
     exports.createDocument = (req, res, next) => {
         let data = new Document({
           username: req.body.username,
-          fileViewed: req.body.fileViewed,
           employee: req.body.employee,
+          fileName: req.body.fileName,
           folderName: req.body.folderName,
           fileDescription: req.body.fileDescription,
           toview: req.body.toview,
@@ -48,9 +48,7 @@ exports.uploadDocument = uploadData.single("image");
                     error: `data not found`
                 });
               })
-            
       };
-      
       exports.getDocument = (req, res, next) => {
         let { username } = req.query;
         Document.find({ username: username })
@@ -124,7 +122,7 @@ exports.uploadDocument = uploadData.single("image");
         req.query.id ? (Id = req.query.id) : next();
         let data = {
             username: req.body.username,
-            fileViewed: req.body.fileViewed,
+            fileName: req.body.fileName,
             employee: req.body.employee,
             folderName: req.body.folderName,
             fileDescription: req.body.fileDescription,
