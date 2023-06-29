@@ -23,7 +23,7 @@ const holidays = {
   { name: "Deepavali", date: "2023-11-13" },
   { name: "Govardhan Puja/Bhai Doo", date: "2023-11-14" }
 ],
-  dec: [{name: "Christmas", date: "2023/12/25"}],
+December: [{name: "Christmas", date: "2023/12/25"}],
 
 };
 

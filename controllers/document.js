@@ -27,7 +27,6 @@ const uploadData = multer({
   storage: s3Storage,
 });
 exports.uploadDocument = uploadData.single("image");
-
     exports.createDocument = (req, res, next) => {
         let data = new Document({
           username: req.body.username,
@@ -129,7 +128,7 @@ exports.uploadDocument = uploadData.single("image");
             toview: req.body.toview,
             toDownload: req.body.toDownload
         };
-        
+        console.log("132",data)
         let check = new Promise((resolve, reject) => {
           if (req.file) {
             data.image = req.file.originalname;
@@ -144,7 +143,6 @@ exports.uploadDocument = uploadData.single("image");
               .then((response2) => {
                 if (response2) {
                   res.status(200).send(response2);
-                  console.log("response2",response2)
                 }
               })
               .catch((err) => {

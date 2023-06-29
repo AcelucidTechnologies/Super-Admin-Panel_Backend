@@ -1,20 +1,7 @@
-const express = require("express");
+
 const mongoose = require("mongoose");
 const PdfPrinter = require("pdfmake");
-const fs = require("fs");
 
-// Initialize Express
-const app = express();
-
-// Connect to MongoDB using Mongoose
-mongoose.connect("mongodb://localhost/pdf-api", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-});
 
 // Define a Mongoose schema for your PDF documents
 const pdfSchema = new mongoose.Schema({
