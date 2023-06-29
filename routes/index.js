@@ -174,7 +174,7 @@ const {
 } = require("../controllers/reviewerList");
 const { createNewReviewerName } = require("../controllers/newReviewerName");
 const { createLeaveManagementProfile, getLeaveProfile, deleteLeaveProfile, getLeaveProfileById, updateLeaveProfile, uploadProfile, getTeamData, getEmail } = require("../controllers/leaveManagementProfile");
-const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById, approve, disapprove, getAllLeaveTracker,} = require("../controllers/leaveTracker");
+const { createLeaveTracker, uploadLeave, getLeaveTracker, deleteLeaveTracker, getLeaveTrackerById, approve, disapprove, getAllLeaveTracker, getAllLeaveTrackerNotification,} = require("../controllers/leaveTracker");
 const { getTotalLeaves } = require("../controllers/totalLeaves");
 const { createLeaveAssets, getLeaveAssets, getLeaveAssetsById, deleteLeaveAssets, updateLeaveAssets } = require("../controllers/leaveManagementAssets");
 const { createDesignation, getDesignation } = require("../controllers/designation");
@@ -195,6 +195,7 @@ const { createSubscription, getSubscription, getSubscriptionById, deleteSubscrip
 const { createProductOption, getProductOption, getProductOptionById, deleteProductOption, updateProductOption } = require("../controllers/productOption");
 const { createAddCoupon, getAddCoupon, getAddCouponById, deleteAddCoupon, updateAddCoupon } = require("../controllers/addCoupon");
 const { createAddAddons, getAddAddons, getAddAddonsById, deleteAddAddons, updateAddAddons } = require("../controllers/addAdons");
+const { getNotification, updateNotification } = require("../controllers/notification");
 // const storage = multer.diskStorage(
 //   {
 //   // destination: function (req, file, cb) {
@@ -902,6 +903,11 @@ router.post(
     createLeaveTracker
   );
   
+  router.get(
+    "/getAllNotification",
+    rolehandler.grantAccess("readOwn", "profile"),
+    getAllLeaveTrackerNotification
+  );
 
   // Assets Apis
 
@@ -1388,4 +1394,18 @@ router.put(
   "/updateAddAddons",
   rolehandler.grantAccess("updateOwn", "profile"),
   updateAddAddons
+);
+
+// Notification
+
+router.get(
+  "/getNotification",
+  rolehandler.grantAccess("readOwn", "profile"),
+  getNotification
+);
+
+router.put(
+  "/updateNotification",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  updateNotification
 );

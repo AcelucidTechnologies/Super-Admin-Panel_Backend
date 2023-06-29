@@ -25,4 +25,4 @@ const DocumentSchema= new Schema({
     collection: "Document",
 }
 )
-module.exports= mongoose.model("Document",DocumentSchema)
+module.exports= mongoose.model("Document",DocumentSchema);

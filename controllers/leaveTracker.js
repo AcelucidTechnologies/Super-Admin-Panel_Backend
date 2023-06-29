@@ -1,5 +1,6 @@
 const LeaveTracker = require("../models/leaveTracker");
 const TotalLeave = require("../models/totalLeaves");
+const Notification= require("../models/notification")
 const multer = require("multer");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
@@ -125,7 +126,6 @@ exports.createLeaveTracker = (req, res, next) => {
   const startDate = new Date(fromDate);
   const endDate = new Date(toDate);
   const today = new Date();
-
   const oneDay = 24 * 60 * 60 * 1000;
   const numberOfDays = Math.ceil((endDate - startDate + oneDay) / oneDay);
 
@@ -182,7 +182,13 @@ exports.createLeaveTracker = (req, res, next) => {
       }
 
       leaveTracker.save().then((result) => {
-        res.status(200).json({ result });
+        const notification = new Notification({
+          username: result.username,
+          isNotificationStatus: false,
+        });
+        notification.save().then(() => {
+          res.status(200).json({ result });
+        });
       });
       // Send email
       console.log("183",leaveTracker)
@@ -264,7 +270,6 @@ exports.approve = (req, res, next) => {
         }
       );
     })
-  
     .catch((err) => {
       console.error(err);
       res.status(500).send("An error occurred approving the leave request.");
@@ -301,7 +306,6 @@ exports.disapprove = (req, res, next) => {
           <p>From: ${leaveTracker.fromDate}</p>
           <p>To: ${leaveTracker.toDate}</p>
           `;
-
       const msg = {
         to: `${leaveTracker.username}`,
         from: "himanshu.975677@gmail.com",
@@ -331,6 +335,29 @@ exports.getAllLeaveTracker = (req, res, next) => {
     .catch((err) => {
       res.status(500).json({
         error: "Something went wrong",
+      });
+    });
+};
+
+exports.getAllLeaveTrackerNotification = (req, res, next) => {
+  LeaveTracker.find()
+    .then((response) => {
+      if (response) {
+        const formattedResponse = response.map((item) => ({
+          ...item._doc,
+          fromDate: new Date(item.fromDate).toISOString().split("T")[0],
+          toDate: new Date(item.toDate).toISOString().split("T")[0],
+        }));
+        res.status(200).json(formattedResponse);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [
+          {
+            error: "Something went wrong while fetching Leave Tracker details",
+          },
+        ],
       });
     });
 };

@@ -40,7 +40,7 @@ exports.createCustomerDetails = async (req, res, next) => {
         image: req.file.originalname,
         discount: req.body.discount,
         amount: req.body.amount,
-        totalAmount: calculateTotalAmount(req.body.amount, req.body.discount)
+        totalAmount: req.body.totalAmount
       });
   
       const response = await data.save();
@@ -56,11 +56,6 @@ exports.createCustomerDetails = async (req, res, next) => {
         error: `Something went wrong ${err}`
       });
     }
-  };
-  
-  const calculateTotalAmount = (amount, discount) => {
-    const totalAmount = (amount * discount) / 100;
-    return totalAmount;
   };
   
 
