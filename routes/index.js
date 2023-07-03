@@ -44,6 +44,7 @@ const {
   deleteProduct,
   updateProduct,
   productImage,
+  getProductById,
 } = require("../controllers/product");
 const passport = require("passport");
 const multer = require("multer");
@@ -184,7 +185,7 @@ const { createReporting, getReporting } = require("../controllers/reporting");
 const { getCalender } = require("../controllers/leaveCalender");
 const { createExitDetails, getExitDetails, getExitDetailsById, deleteExitDetails, updateExitDetails } = require("../controllers/exitDetails");
 const { createLocation, getLocation } = require("../controllers/location");
-const { createReimbursement, getReimbursement, getReimbursementById, deleteReimbursement, updateReimbursement } = require("../controllers/travelExpense");
+const { createReimbursement, getReimbursement, getReimbursementById, deleteReimbursement, updateReimbursement, approveReimbursement, reimbursementImage } = require("../controllers/travelExpense");
 const { createDocument, uploadDocument, getDocument, getDocuemntById, deleteDocument, updateDocument } = require("../controllers/document");
 const { sendMail } = require("../controllers/sendGridMail");
 const { createCustomerDetails, uploadOrder, getCustomerDetails } = require("../controllers/customerDetails");
@@ -367,17 +368,14 @@ router.get(
   getProduct
 );
 router.get(
-  "/products",
+  "/getProductById",
   rolehandler.grantAccess("readOwn", "profile"),
-  getAllProduct
+  getProductById
 );
 router.put(
-  "/products",
+  "/updateProduct",
   rolehandler.grantAccess("updateOwn", "profile"),
-  upload2.fields([
-    { name: "image", maxCount: 1 },
-    { name: "video", maxCount: 1 },
-  ]),
+  productImage,
   updateProduct
 );
 router.delete(
@@ -1076,6 +1074,7 @@ router.put(
 router.post(
   "/createReimbursement",
   rolehandler.grantAccess("readOwn", "profile"),
+  reimbursementImage,
   createReimbursement
 );
 router.get(
@@ -1097,6 +1096,12 @@ router.put(
   "/updateReimbursement",
   rolehandler.grantAccess("updateOwn", "profile"),
   updateReimbursement
+);
+
+router.put(
+  "/approveReimbursement",
+  rolehandler.grantAccess("updateOwn", "profile"),
+  approveReimbursement
 );
 
 // Document
@@ -1313,7 +1318,7 @@ router.get(
 );
 
 router.get(
-  "/ getProductOptionById",
+  "/getProductOptionById",
   rolehandler.grantAccess("readOwn", "profile"),
   getProductOptionById
 );

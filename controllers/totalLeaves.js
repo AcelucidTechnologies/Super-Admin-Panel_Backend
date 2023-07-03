@@ -2,7 +2,7 @@ const TotalLeaves= require("../models/totalLeaves");
 
 exports.getTotalLeaves=(req,res,next)=>{
     let { username } = req.query;
-    TotalLeaves.find({ username: username })
+    TotalLeaves.find({ username: username }).sort({ createdAt: -1 })
       .then((response) => {
         if (response) {
           res.status(200).send(response);

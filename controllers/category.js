@@ -162,13 +162,12 @@ exports.createCategory=(req,res,next)=>{
     categoryOrder: req.body.categoryOrder,
     image: req.file.originalname,
   });
-console.log(data)
   Category.findOne({categoryName: data.categoryName,
     username:data.username})
     .then((response) => {
       if (!response) {
         data.save().then((result) => {
-          res.json(result);
+          res.status(200).json(result);
         });
       } else {
         res.status(404).json({

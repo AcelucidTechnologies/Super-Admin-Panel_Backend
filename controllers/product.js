@@ -3,6 +3,7 @@ const multer = require("multer");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const bucket = require("../mediacontrol");
+const product = require("../models/product");
 
 const s3 = new S3Client({
   credentials: {
@@ -29,14 +30,13 @@ const uploadData = multer({
 });
 exports.productImage = uploadData.single("image");
 
-exports.getAllProduct = (req, res, next) => {
-  Product.find()
+exports.getProductById = (req, res, next) => {
+  let  Id
+ (req.query.id)?Id = req.query.id:next()
+  Product.findById(Id)
     .then((response) => {
       if (response) {
-        response.map((item) => {
-          item.images = process.env.bucket_path + item.images;
-          item.videos = process.env.bucket_path + item.videos;
-        });
+        response.image = process.env.bucket_path + response.image;
         res.status(200).send(response);
       }
     })
@@ -145,38 +145,32 @@ exports.createProduct = (req, res, next) => {
 exports.updateProduct = (req, res, next) => {
   let Id;
   req.query.id ? (Id = req.query.id) : next();
-  let Data = JSON.parse(req.body.Data);
-  let resultdata = "";
-  let resultvideodata = "";
+  let data = {
+    username: req.body.username,
+    productName: req.body.productName,
+    categoryName: req.body.categoryName,
+    model: req.body.model,
+    ourPrice: req.body.ourPrice,
+    marketPrice: req.body.marketPrice,
+    productWeight: req.body.productWeight,
+    weightType: req.body.weightType,
+    productDescription: req.body.productDescription,
+    status: req.body.status,
+    image: req.file.originalname,
+   // image: req.file.originalname,
+  };
   let check = new Promise((resolve, reject) => {
-    if (
-      Object.keys(Data).includes("videos") &&
-      Object.keys(Data).includes("images")
-    ) {
-      bucket.videoUpload(req.files.video[0]).then((ret) => {
-        resultvideodata = ret;
-        if (!!resultvideodata) {
-          // console.log([resultdata, resultvideodata]);
-          Data.images = req.files.image[0].originalname;
-          Data.videos = req.files.video[0].originalname;
-        }
-        resolve(true);
-      });
-    } else if (Object.keys(Data).includes("images")) {
-      Data.images = req.files.image[0].originalname;
+    if (req.file) {
+      data.image = req.file.originalname;
       resolve(true);
-    } else if (Object.keys(Data).includes("videos")) {
-      bucket.videoUpload(req.files.video[0]).then(() => {
-        Data.videos = req.files.video[0].originalname;
-        resolve(true);
-      });
     } else {
       resolve(true);
     }
   });
   check.then((result) => {
     if (result) {
-      Product.findByIdAndUpdate(Id, Data, { new: true })
+      Product
+        .findByIdAndUpdate(Id, data, { new: true })
         .then((response2) => {
           if (response2) {
             res.status(200).send(response2);
@@ -184,7 +178,7 @@ exports.updateProduct = (req, res, next) => {
         })
         .catch((err) => {
           res.status(500).json({
-            errors: [{ error: "Something went wrong" }],
+            errors: [{ error: `Something went wrong ${err} ` }],
           });
         });
     }

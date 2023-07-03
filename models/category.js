@@ -6,7 +6,7 @@ const categorySchema = new Schema(
     username: { type: String },
     categoryName: { type: String },
     subCategory: { type: String },
-    status: { type: Boolean },
+    status: { type: String },
     image: { type: String },
     categoryOrder: { type: Number },
     // meta_description: {
