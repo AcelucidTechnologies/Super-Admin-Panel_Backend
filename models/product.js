@@ -1,5 +1,5 @@
-const mongoose = require("mongoose")
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 // const productSchema = new Schema(
 //     {
 //         Product_Region: {
@@ -45,18 +45,18 @@ const Schema = mongoose.Schema
 //     }
 //   );
 
-const productSchema= Schema({
-  username: {type: String},
-  productName:{type: String , required: true},
-  categoryName: {type: String,required: true},
-  model: {type: String},
-  ourPrice: {type: String},
-  marketPrice: {type: String},
-  productWeight: {type: Number},
-  weightType: {type: Number},
-  image: {type: String},
-  productDescription: {type: String},
-  status: {type: Boolean}
-})
-  module.exports = mongoose.model("Product", productSchema);
-
+const productSchema = Schema({
+  username: { type: String },
+  productName: { type: String, required: true },
+  categoryName: { type: String, required: true },
+  model: { type: String },
+  ourPrice: { type: String },
+  marketPrice: { type: String },
+  productWeight: { type: Number },
+  weightType: { type: Number },
+  quantity: {type: String},
+  image: [{ type: String }],
+  productDescription: { type: String },
+  status: { type: Boolean },
+});
+module.exports = mongoose.model("Product", productSchema);

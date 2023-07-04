@@ -111,6 +111,7 @@ exports.createProduct = (req, res, next) => {
     marketPrice: req.body.marketPrice,
     productWeight: req.body.productWeight,
     weightType: req.body.weightType,
+    quantity: req.body.quantity,
     productDescription: req.body.productDescription,
     status: req.body.status,
     image: req.file.originalname,
@@ -157,6 +158,7 @@ exports.updateProduct = (req, res, next) => {
     productDescription: req.body.productDescription,
     status: req.body.status,
     image: req.file.originalname,
+    quantity: req.body.quantity
    // image: req.file.originalname,
   };
   let check = new Promise((resolve, reject) => {
