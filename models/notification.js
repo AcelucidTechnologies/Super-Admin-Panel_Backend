@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const notificationSchema = new Schema({
-notificationContent: {type: String,default: "You have a new leave notification"},
+notificationContent: {type: String},
 username: {type: String},
 fromDate: {type: Date},
 toDate: {type: Date},

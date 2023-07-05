@@ -5,6 +5,7 @@ exports.updateNotification = (req, res, next) => {
   Notification.findById(Id)
     .then((notification) => {
       if (!notification) {
+        console.log("123456")
         return res.status(200).json("Data not found");
       }
       notification.isNotificationStatus = true;

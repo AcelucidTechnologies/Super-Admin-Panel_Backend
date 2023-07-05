@@ -163,7 +163,7 @@ exports.createLeaveTracker = (req, res, next) => {
           });
         }
       }
-
+      
       totalLeave[leaveType] = updatedLeaveCount;
       const leaveTracker = new LeaveTracker({
         username,
@@ -186,6 +186,7 @@ exports.createLeaveTracker = (req, res, next) => {
           username: result.username,
           isNotificationStatus: false,
         });
+        notification.notificationContent=`You have a new leave notification from ${result.username}`
         notification.save().then(() => {
           res.status(200).json({ result });
         });
@@ -265,8 +266,6 @@ exports.approve = (req, res, next) => {
             subject: `${leaveTracker.subject}`,
             html: emailContent,
           };
-          sgMail.send(msg);
-          console.log("263",sgMail.send(msg))
         }
       );
     })

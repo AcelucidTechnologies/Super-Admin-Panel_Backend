@@ -11,7 +11,14 @@ const ReimbursementSchema= new Schema({
       travelTo: {type: String},
       purposeTravel: {type: String},
       modifiedBy: {type: String},
-      addedBy: {type: String}
+      status: {type: String , default: "Pending"},
+      totalReimbursementAmount:{type: Number },
+      image: {type: String},
+      addedBy:  [
+        {
+          type: String,
+        },
+      ],
 },
 {
     timestamps: true,

@@ -94,7 +94,9 @@ exports.getLeaveProfile = (req, res, next) => {
       res.status(200).json(response);
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(208).json({
+        error: "Data not found"
+      });
     });
 };
 

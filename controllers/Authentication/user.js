@@ -244,7 +244,7 @@ exports.login = (req, res, next) => {
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ errors: [{ user: "User not found" }] });
+        return res.status(208).json({ errors: [{ user: "User not found" }] });
       } else {
         console.log("Done");
         bcrypt
@@ -252,8 +252,8 @@ exports.login = (req, res, next) => {
           .then((match) => {
             if (!match) {
               return res
-                .status(404)
-                .json({ errors: [{ password: "Incorrect Password" }] });
+                .status(208)
+                .json({ errors: [{ user: "Incorrect Password" }] });
             }
             const token = jwt.sign(
               { userId: user._id },
