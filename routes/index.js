@@ -1095,6 +1095,7 @@ router.delete(
 router.put(
   "/updateReimbursement",
   rolehandler.grantAccess("updateOwn", "profile"),
+  reimbursementImage,
   updateReimbursement
 );
 

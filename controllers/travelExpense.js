@@ -169,7 +169,6 @@ exports.getReimbursementById = (req, res, next) => {
       purposeTravel: req.body.purposeTravel,
       modifiedBy: req.body.modifiedBy,
       totalReimbursementAmount: req.body.totalReimbursementAmount,
-      image: req.file.originalname,
     };
 
     let check = new Promise((resolve, reject) => {
@@ -182,10 +181,10 @@ exports.getReimbursementById = (req, res, next) => {
     });
     check.then((result) => {
       if (result) {
-        Reimbursement
-          .findByIdAndUpdate(Id, data, { new: true })
+        Reimbursement.findByIdAndUpdate(Id, data, { new: true })
           .then((response2) => {
             if (response2) {
+              console.log(response2)
               res.status(200).send(response2);
             }
           })
