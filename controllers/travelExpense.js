@@ -110,13 +110,11 @@ exports.createReimbursement = (req, res, next) => {
 
 
 exports.getReimbursement=(req,res,next)=>{
-    let { username } = req.query;
-    Reimbursement.find({ username: username })
+    Reimbursement.find()
       .then((response) => {
         if (response) {
           res.status(200).send(response);
         }
-        
       })
       .catch((err) => {
         res.status(208).json({
@@ -169,7 +167,6 @@ exports.getReimbursementById = (req, res, next) => {
       purposeTravel: req.body.purposeTravel,
       modifiedBy: req.body.modifiedBy,
       totalReimbursementAmount: req.body.totalReimbursementAmount,
-      image: req.file.originalname,
     };
 
     let check = new Promise((resolve, reject) => {
@@ -182,10 +179,10 @@ exports.getReimbursementById = (req, res, next) => {
     });
     check.then((result) => {
       if (result) {
-        Reimbursement
-          .findByIdAndUpdate(Id, data, { new: true })
+        Reimbursement.findByIdAndUpdate(Id, data, { new: true })
           .then((response2) => {
             if (response2) {
+              console.log(response2)
               res.status(200).send(response2);
             }
           })
@@ -236,13 +233,13 @@ exports.deleteReimbursement = (req, res, next) => {
           });
         }
      
-        if (reimbursement.status === "Approved") {
+        if (reimbursement.status === "Done") {
           return res.status(200).json({
             error: "Reimbursement is already Approved.",
           });
         }
    
-        reimbursement.status = "Approved";
+        reimbursement.status = "Done";
         reimbursement.save().then((result) => {
         return res.status(200).json({
             message: "Reimbursement Approved Successfully",
