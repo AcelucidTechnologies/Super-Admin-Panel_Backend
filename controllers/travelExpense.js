@@ -110,13 +110,11 @@ exports.createReimbursement = (req, res, next) => {
 
 
 exports.getReimbursement=(req,res,next)=>{
-    let { username } = req.query;
-    Reimbursement.find({ username: username })
+    Reimbursement.find()
       .then((response) => {
         if (response) {
           res.status(200).send(response);
         }
-        
       })
       .catch((err) => {
         res.status(208).json({
@@ -235,13 +233,13 @@ exports.deleteReimbursement = (req, res, next) => {
           });
         }
      
-        if (reimbursement.status === "Approved") {
+        if (reimbursement.status === "Done") {
           return res.status(200).json({
             error: "Reimbursement is already Approved.",
           });
         }
    
-        reimbursement.status = "Approved";
+        reimbursement.status = "Done";
         reimbursement.save().then((result) => {
         return res.status(200).json({
             message: "Reimbursement Approved Successfully",
